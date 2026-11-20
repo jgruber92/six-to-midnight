@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=17">
+<link rel="stylesheet" href="css/style.css?v=18">
 <script>
 // Old one-page links (/#shows, /#songs ...) go to the new pages.
 (function(){var m={"#shows":"shows/","#next":"shows/","#newsletter":"shows/#newsletter","#songs":"songs/","#watch":"watch/","#photos":"watch/#photos","#about":"about/","#find":"songs/#find"};var t=m[location.hash];if(t)location.replace(t);})();
@@ -73,14 +73,20 @@
       <h2 id="p-fan">Coming to a show?</h2>
       <div data-fan-next aria-live="polite"></div>
       <a class="btn btn-line" href="shows/">See all shows</a>
-      <div class="follow" aria-label="Follow us">
-        <p class="label">Follow us</p>
-        <div class="row">
-          <a class="btn btn-line btn-sm" data-social="instagram" href="https://www.instagram.com/six.to.midnight/" target="_blank" rel="noopener">Instagram</a>
-          <a class="btn btn-line btn-sm" data-social="facebook" href="https://www.facebook.com/sixtomidnight6200" target="_blank" rel="noopener">Facebook</a>
-        </div>
-      </div>
     </article>
+  </div>
+</section>
+
+<!-- Socials get their own block, right under the two paths. -->
+<section class="follow-sec" aria-labelledby="fo-h">
+  <div class="wrap">
+    <p class="label">Follow us</p>
+    <h2 id="fo-h">Never miss a show</h2>
+    <p class="say">We post every show on Instagram and Facebook.</p>
+    <div class="row">
+      <a class="btn btn-hot" data-social="instagram" href="https://www.instagram.com/six.to.midnight/" target="_blank" rel="noopener">Instagram</a>
+      <a class="btn btn-line" data-social="facebook" href="https://www.facebook.com/sixtomidnight6200" target="_blank" rel="noopener">Facebook</a>
+    </div>
   </div>
 </section>
 
@@ -118,7 +124,7 @@
   </div>
 </footer>
 
-<script src="js/config.js?v=17"></script>
-<script src="js/main.js?v=17"></script>
+<script src="js/config.js?v=18"></script>
+<script src="js/main.js?v=18"></script>
 </body>
 </html>

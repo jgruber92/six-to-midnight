@@ -880,3 +880,10 @@ html{scroll-padding-top:0}
   .door .when{padding:8px 12px}
   .door .follow{padding-top:10px}
 }
+/* Home: socials as their own block under the two paths */
+.follow-sec{padding:44px 0 8px;text-align:center}
+.follow-sec h2{font-size:clamp(2.3rem,9vw,3.6rem);margin:6px 0 8px}
+.follow-sec .say{color:var(--muted);max-width:40ch;margin:0 auto 18px}
+.follow-sec .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.follow-sec .btn{flex:1 1 140px;max-width:220px}
+.proof-sec{padding-top:36px}
