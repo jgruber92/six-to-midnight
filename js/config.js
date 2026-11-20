@@ -5,7 +5,7 @@
 window.STM = {
   // Full public address of the site, ending in "/" (e.g. "https://sixtomidnight.com/").
   // Leave empty until it's published. When set, pages use it for absolute og:image / og:url links.
-  siteUrl: "https://jgruber92.github.io/six-to-midnight/",
+  siteUrl: "https://sixtomidnightlive.com/",
 
   email: "sixtomidnight6200@gmail.com", // band inbox (from Facebook page; confirm)
 
