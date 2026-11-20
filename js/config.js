@@ -51,12 +51,12 @@ window.STM = {
 
   // Song requests (/request/ page + QR card). Paste a Formspree or Google Form endpoint.
   // Empty = the form opens a prefilled email to the band inbox instead.
-  songRequestAction: "",
+  songRequestAction: "https://script.google.com/macros/s/AKfycbww5pKwOwOJVHbuJv10TVd_UrhwoIbSJ2UMYLGfNXhBuRX29kU-7ga-q9HU_J4Z2_Vz4A/exec?form=song",
 
   // "Bring us to your bar" venue suggestions (suggest/ page). Same setup as song requests:
   // paste a Formspree or Google Form endpoint. Empty = the form opens a prefilled email to the band inbox.
   // Suggestions are private: they are never shown on the site.
-  venueSuggestAction: "",
+  venueSuggestAction: "https://script.google.com/macros/s/AKfycbww5pKwOwOJVHbuJv10TVd_UrhwoIbSJ2UMYLGfNXhBuRX29kU-7ga-q9HU_J4Z2_Vz4A/exec?form=suggest",
 
   // The ready-made message fans share with a bar (suggest/ page). The booking page link
   // (siteUrl + "book/") is added to the end automatically.
@@ -72,7 +72,7 @@ window.STM = {
 
   // Booking form. Paste a Formspree (or similar) endpoint here.
   // Empty = the form opens an email to the band inbox instead.
-  bookingFormAction: "",
+  bookingFormAction: "https://script.google.com/macros/s/AKfycbww5pKwOwOJVHbuJv10TVd_UrhwoIbSJ2UMYLGfNXhBuRX29kU-7ga-q9HU_J4Z2_Vz4A/exec?form=booking",
 
   // Setlist (from Jeff's "Band Setlist" Spotify playlist, 41 songs, 2026-11-19).
   // Grouped by release decade. Add or remove lines here and the site updates.
