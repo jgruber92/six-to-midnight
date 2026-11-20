@@ -36,7 +36,6 @@ window.STM = {
   // Testimonials: real comments from the band's Facebook/Instagram (pulled 2026-11-19).
   // Light cleanup only (typos, profanity). First name + last initial. Family members left out.
   quotes: [
-    { text: "What an amazing night last night... Would you like to rebook?", who: "Booking manager", where: "Brother's Tavern, Milford" },
     { text: "Fantastic, tight band. Singer's got some unbelievable chops!", who: "Jorge C.", where: "on Facebook" },
     { text: "You guys kicked ass last night!", who: "Karen J.", where: "after Valley Pub" },
     { text: "Show was amazing.", who: "Damien L.", where: "after Pinz, Milford" },
