@@ -859,3 +859,24 @@ html{scroll-padding-top:0}
 /* Request: "Bring us to your bar" in the top bar, on the first phone screen */
 .request .rtop{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .request .rtop a.rtop-bar{font-family:var(--label);letter-spacing:.14em;text-transform:uppercase;font-size:.72rem;color:var(--pink);text-underline-offset:3px;display:inline-flex;align-items:center;min-height:44px}
+
+/* ---------- batch 2: calmer Home. Both paths on the first phone screen, follow buttons on the fan card ---------- */
+.hero.r3{padding:22px 0 84px}
+.hero.r3 .ruled{font-size:.74rem;letter-spacing:.3em}
+.hero.r3 h1{margin:12px 0 8px}
+.hero.r3 .tag{margin:10px auto 0}
+@media(min-width:900px){.hero.r3{padding:40px 0 110px}}
+.door .follow{border-top:1px solid var(--line);padding-top:12px;margin-top:4px}
+.door .follow .label{margin-bottom:8px}
+.door .follow .row{display:flex;gap:10px;flex-wrap:wrap}
+.door .follow .btn{flex:1 1 120px;margin-top:0;align-self:auto;min-width:0}
+@media(min-width:760px){.door .follow .btn{flex:0 1 160px}}
+@media(max-width:759px){.door{padding:18px 18px 18px;gap:8px}.door h2{font-size:clamp(2.3rem,10vw,3rem)}.door [data-fan-next]{min-height:0}}
+@media(max-width:759px){
+  .hero.r3{padding:14px 0 76px}
+  .hero.r3 h1{font-size:clamp(3.6rem,16.5vw,6rem);margin:10px 0 6px}
+  .hero.r3 .tag{font-size:1rem}
+  .paths .grid{gap:12px}
+  .door .when{padding:8px 12px}
+  .door .follow{padding-top:10px}
+}

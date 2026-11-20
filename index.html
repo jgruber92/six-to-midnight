@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=16">
+<link rel="stylesheet" href="css/style.css?v=17">
 <script>
 // Old one-page links (/#shows, /#songs ...) go to the new pages.
 (function(){var m={"#shows":"shows/","#next":"shows/","#newsletter":"shows/#newsletter","#songs":"songs/","#watch":"watch/","#photos":"watch/#photos","#about":"about/","#find":"songs/#find"};var t=m[location.hash];if(t)location.replace(t);})();
@@ -52,10 +52,8 @@
   <div class="tint"><img src="img/hero/full-band-live-brothers-tavern-lit.jpg" alt="Six to Midnight playing live on stage at Brother's Tavern" width="1600" height="1147" fetchpriority="high"></div>
   <div class="beam b1" aria-hidden="true"></div><div class="beam b2" aria-hidden="true"></div>
   <div class="wrap">
-    <img class="logo" src="img/logo.svg" alt="" width="150" height="131">
-    <p class="ruled">Central Mass</p>
+    <p class="ruled">90s &amp; 2000s rock · Central Mass</p>
     <h1>Six to <span>Midnight</span></h1>
-    <p class="boxed">90s &amp; 2000s Rock</p>
     <p class="tag">The rock your inner millennial is dying to hear.</p>
   </div>
 </section>
@@ -67,7 +65,6 @@
       <p class="label">For bars &amp; events</p>
       <h2 id="p-book">Booking a band?</h2>
       <ul class="proof" aria-label="Quick facts"><li><span data-song-count>41</span> songs</li><li>3+ hours</li><li>Own PA</li></ul>
-      <p class="say">See a clip, the song list and how to check a date.</p>
       <a class="btn btn-hot" href="book/">Book us</a>
     </article>
 
@@ -75,13 +72,19 @@
       <p class="label">For fans</p>
       <h2 id="p-fan">Coming to a show?</h2>
       <div data-fan-next aria-live="polite"></div>
-      <a class="btn btn-line" href="shows/">See shows</a>
-      <p class="sub-link">Know a bar that should book us? <a href="suggest/">Bring us to your bar &rarr;</a></p>
+      <a class="btn btn-line" href="shows/">See all shows</a>
+      <div class="follow" aria-label="Follow us">
+        <p class="label">Follow us</p>
+        <div class="row">
+          <a class="btn btn-line btn-sm" data-social="instagram" href="https://www.instagram.com/six.to.midnight/" target="_blank" rel="noopener">Instagram</a>
+          <a class="btn btn-line btn-sm" data-social="facebook" href="https://www.facebook.com/sixtomidnight6200" target="_blank" rel="noopener">Facebook</a>
+        </div>
+      </div>
     </article>
   </div>
 </section>
 
-<!-- One clip, two quotes. Everything else lives on Watch and Book us. -->
+<!-- One clip, one quote. Everything else lives on Watch and Book us. -->
 <section class="proof-sec" aria-labelledby="pr-h">
   <div class="wrap proof-grid" data-clipslot>
     <div class="proof-head">
@@ -96,16 +99,6 @@
   </div>
 </section>
 
-<section class="more-links" aria-labelledby="ml-h">
-  <div class="wrap">
-    <h2 class="label" id="ml-h">More</h2>
-    <ul class="rows">
-      <li><a href="songs/"><b>Songs</b><small>The full song list</small><span class="arr" aria-hidden="true">&rarr;</span></a></li>
-      <li><a href="watch/"><b>Watch</b><small>Clips and photos</small><span class="arr" aria-hidden="true">&rarr;</span></a></li>
-      <li><a href="about/"><b>About</b><small>Meet the band</small><span class="arr" aria-hidden="true">&rarr;</span></a></li>
-    </ul>
-  </div>
-</section>
 </main>
 
 <footer>
@@ -125,7 +118,7 @@
   </div>
 </footer>
 
-<script src="js/config.js?v=16"></script>
-<script src="js/main.js?v=16"></script>
+<script src="js/config.js?v=17"></script>
+<script src="js/main.js?v=17"></script>
 </body>
 </html>

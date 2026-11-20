@@ -249,8 +249,8 @@
     var Q = C.quotes || [];
     var cite = function (q) { return esc(q.who) + (q.where ? ", " + esc(q.where) : ""); };
     $$("[data-quotes=home]").forEach(function (el) {
-      var list = Q.filter(function (q) { return q.home; }).slice(0, 2);
-      if (!list.length) list = Q.slice(0, 2);
+      var list = Q.filter(function (q) { return q.home; }).slice(0, 1);
+      if (!list.length) list = Q.slice(0, 1);
       if (!list.length) { el.hidden = true; return; }
       el.innerHTML = list.map(function (q) { return '<figure class="q"><blockquote>"' + esc(q.text) + '"</blockquote><figcaption>' + cite(q) + "</figcaption></figure>"; }).join("");
     });
