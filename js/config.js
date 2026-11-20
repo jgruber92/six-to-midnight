@@ -177,7 +177,7 @@ window.STM = {
     { label: "PA and sound", value: "We bring our own" },
     { label: "Stage space", value: "Flexible. We just need room for five" },
     { label: "Power", value: "At least 2 to 3 outlets" },
-    { label: "Load-in", value: "", need: "e.g. 60 minutes before start" },
+    { label: "Load-in", value: "About 90 minutes before start" },
     { label: "Set length", value: "Up to 3.5 hours, or shorter if you need" },
   ],
 
