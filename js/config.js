@@ -175,7 +175,7 @@ window.STM = {
   // load-in time (e.g. "60 min before start"), sets (count + length, e.g. "2 or 3 sets, flexible").
   rider: [
     { label: "PA and sound", value: "We bring our own" },
-    { label: "Stage space", value: "", need: "e.g. about 15 x 10 ft" },
+    { label: "Stage space", value: "Flexible. We just need room for five" },
     { label: "Power", value: "At least 2 to 3 outlets" },
     { label: "Load-in", value: "", need: "e.g. 60 minutes before start" },
     { label: "Set length", value: "Up to 3.5 hours, or shorter if you need" },
