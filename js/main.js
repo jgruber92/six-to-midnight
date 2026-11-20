@@ -38,7 +38,9 @@
   var longDate = function (d) { return DAY[d.getDay()] + ", " + MON[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear(); };
   var shortDate = function (d) { return MON[d.getMonth()] + " " + d.getDate(); };
   // "Time TBA" placeholder: plain text on the live site (class .tba, no dashed .todo box). Fill `time` in config gigs.
-  var timeText = function (g) { return g.time ? esc(g.time) : '<span class="tba">Time TBA</span>'; };
+  // "8-11pm" in config reads as "8 to 11pm" on the site.
+  var timeShown = function (g) { return String(g.time || "").replace(/(\d)\s*(?:-|\u2013)\s*(\d)/, "$1 to $2"); };
+  var timeText = function (g) { return g.time ? esc(timeShown(g)) : '<span class="tba">Time TBA</span>'; };
   var niceDate = function (v) { var d = toDate(v); return d ? longDate(d) : v; };
   var mapsUrl = function (g) { return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(g.venue + " " + g.town); };
 
@@ -98,7 +100,7 @@
     var tm = parseGigTime(g);
     var shows = C.siteUrl ? C.siteUrl.replace(/\/?$/, "/") + "shows/" : "";
     var ev = { title: "Six to Midnight live at " + g.venue, where: g.venue + ", " + g.town,
-      details: "90s & 2000s rock." + (tm ? "" : " Time TBA, check for updates.") + (shows ? " Shows: " + shows : "") + (IG ? " Instagram: " + IG : "") };
+      details: "90s and 2000s rock" + (tm ? ", " + timeShown(g) + "." : ". Time TBA, check for updates.") + (shows ? " Shows: " + shows : "") + (IG ? " Instagram: " + IG : "") };
     if (tm) {
       ev.start = stamp(tm.start); ev.end = stamp(tm.end);
     } else {
@@ -140,24 +142,25 @@
   function renderGigs(gigs) {
     var next = gigs[0];
 
-    // next-show ticket. data-next="home": Get show emails. Otherwise (Shows page): details link, or Instagram.
-    // Both get Add to calendar (.ics built here from config) and Directions.
+    // Home "Coming to a show?" card: the next date as a small chip (no calendar row on Home).
+    $$("[data-fan-next]").forEach(function (el) {
+      el.innerHTML = next
+        ? '<div class="when"><div class="d" aria-hidden="true">' + next.d.getDate() + '</div><p class="m"><span class="sr-only">Next show: </span><b>' + esc(next.venue) + "</b>" +
+          DAY[next.d.getDay()] + ", " + shortDate(next.d) + " · " + esc(String(next.town).replace(/, [A-Z]{2}$/, "")) + "<br>" + timeText(next) + "</p></div>"
+        : '<p class="say">No date on the calendar yet. Get an email when we book one.</p>';
+    });
+
+    // next-show ticket (Shows page): details link (or Instagram), Directions, Add to calendar
+    // (.ics built here from config, plus a Google Calendar link).
     var t = $("[data-next]");
     if (t) {
-      var home = t.dataset.next === "home";
       if (next) {
-        var first = (home
-          ? '<a class="btn btn-hot btn-sm" href="' + ROOT + 'shows/#newsletter">Get show emails</a>'
-          : '<a class="btn btn-hot btn-sm" href="' + esc(next.link || IG) + '" target="_blank" rel="noopener">' + (next.link ? "Get the details" : "Follow for updates") + "</a>");
+        var first = '<a class="btn btn-hot btn-sm" href="' + esc(next.link || IG) + '" target="_blank" rel="noopener">' + (next.link ? "Get the details" : "Follow for updates") + "</a>";
         var cal = '<p class="cal">Add to calendar: <a href="' + icsHref(next) + '" download="six-to-midnight-' + esc(next.date) + '.ics">Apple / Outlook</a> · ' +
           '<a href="' + esc(googleCalHref(next)) + '" target="_blank" rel="noopener">Google</a></p>';
         t.innerHTML = '<div class="stub"><div class="d">' + next.d.getDate() + '</div><div class="m">' + DAY[next.d.getDay()] + "<b>" + MON[next.d.getMonth()] + " " + next.d.getFullYear() + "</b></div></div>" +
           '<div class="info"><p class="label">Next show</p><h2>' + esc(next.venue) + "</h2><p>" + longDate(next.d) + " · " + esc(next.town) + " · " + timeText(next) + "</p>" +
           '<div class="row">' + first + '<a class="btn btn-line btn-sm" href="' + mapsUrl(next) + '" target="_blank" rel="noopener">Directions</a></div>' + cal + "</div>";
-      } else if (home) {
-        t.closest(".ticket").classList.add("empty");
-        t.innerHTML = '<div class="info"><p class="label">Next show</p><p>Nothing on the calendar yet. Follow along and you\'ll hear first.</p>' +
-          '<div class="row"><a class="btn btn-hot btn-sm" href="' + esc(IG) + '" target="_blank" rel="noopener">Follow on Instagram</a></div></div>';
       } else {
         t.closest(".ticket").hidden = true; // Shows page: the list below says it instead
       }
@@ -175,7 +178,7 @@
               (g.link ? '<a class="btn btn-line btn-sm" href="' + esc(g.link) + '" target="_blank" rel="noopener">Details</a>' : "") + "</li>";
           }).join("") + "</ul>"
         : gigs.length ? ""
-        : '<p class="empty">Nothing on the calendar right now. We\'re working on it. Sign up below and you\'ll hear first.</p>' +
+        : '<p class="empty">Nothing else on the calendar yet. Sign up below and we\'ll email you when we book one.</p>' +
           '<p class="empty">Want us at your place? <a href="' + ROOT + 'book/">Book us.</a></p>';
       $$("[data-gigs-head]").forEach(function (h) { h.hidden = !rest.length; });
       var box = list.closest("[data-gigs-section]");
@@ -245,7 +248,13 @@
   function renderQuotes() {
     var Q = C.quotes || [];
     var cite = function (q) { return esc(q.who) + (q.where ? ", " + esc(q.where) : ""); };
-    $$("[data-quotes]").forEach(function (el) {
+    $$("[data-quotes=home]").forEach(function (el) {
+      var list = Q.filter(function (q) { return q.home; }).slice(0, 2);
+      if (!list.length) list = Q.slice(0, 2);
+      if (!list.length) { el.hidden = true; return; }
+      el.innerHTML = list.map(function (q) { return '<figure class="q"><blockquote>"' + esc(q.text) + '"</blockquote><figcaption>' + cite(q) + "</figcaption></figure>"; }).join("");
+    });
+    $$("[data-quotes]:not([data-quotes=home])").forEach(function (el) {
       var max = el.dataset.quotes === "all" ? Q.length : +el.dataset.quotes || 3;
       // Venue and fan quotes lead; handle-only credits (e.g. @someone) go last on the full list.
       var ordered = max >= Q.length ? Q.filter(function (q) { return !/^@/.test(q.who); }).concat(Q.filter(function (q) { return /^@/.test(q.who); })) : Q;
@@ -256,35 +265,42 @@
         (list.length > 1 ? '<div class="' + (el.dataset.quotes === "all" ? "qgrid" : "small") + '">' + list.slice(1).map(function (q) {
           return '<figure><blockquote>"' + esc(q.text) + '"</blockquote><figcaption>' + cite(q) + "</figcaption></figure>";
         }).join("") + "</div>" : "");
+      // data-quotes-show="3": show the first few, the rest behind a "More" button.
+      var show = +el.dataset.quotesShow;
+      var figs = $$("figure", el);
+      if (show && figs.length > show) {
+        var extra = figs.slice(show);
+        extra.forEach(function (f) { f.hidden = true; });
+        var more = document.createElement("p");
+        more.className = "q-more";
+        more.innerHTML = '<button class="btn btn-line btn-sm" type="button">More from Facebook and Instagram</button>';
+        el.appendChild(more);
+        $("button", more).addEventListener("click", function () {
+          extra.forEach(function (f) { f.hidden = false; });
+          more.hidden = true;
+          extra[0].setAttribute("tabindex", "-1"); extra[0].focus({ preventScroll: true });
+        });
+      }
     });
   }
 
-  // ---------- quote swipe row (Home): data-quote-row="3" ----------
-  function renderQuoteRow() {
-    var Q = C.quotes || [];
-    $$("[data-quote-row]").forEach(function (el) {
-      var list = Q.slice(0, +el.dataset.quoteRow || 3);
-      if (!list.length) { el.closest("section").hidden = true; return; }
-      el.innerHTML = list.map(function (q) {
-        return '<figure class="q"><blockquote>"' + esc(q.text) + '"</blockquote><figcaption>' + esc(q.who) + (q.where ? ", " + esc(q.where) : "") + "</figcaption></figure>";
-      }).join("");
-      // Keyboard users can scroll it only while it's a swipe row; on desktop it's a static grid, so no tab stop.
-      var tabStop = function () { if (el.scrollWidth > el.clientWidth + 2) el.setAttribute("tabindex", "0"); else el.removeAttribute("tabindex"); };
-      tabStop(); window.addEventListener("resize", tabStop);
-    });
-  }
-
-  // ---------- one featured clip: data-clip="0" (index in config clips) + caption in data-clip-title="0" ----------
+  // ---------- featured clip (Home, Book us): the first `wide: true` clip in config, else the first clip ----------
+  // [data-clipslot] gets class "wide" (16:9 frame) or "tall" (phone clip); the video goes in [data-clip],
+  // its caption in [data-clip-title].
   function renderFeatureClip() {
     var clips = C.clips || [];
+    var m = clips.filter(function (c) { return c && c.wide; })[0] || clips[0];
+    $$("[data-clipslot]").forEach(function (slot) {
+      if (!m) { var f = slot.closest("section"); if (f) f.hidden = true; return; }
+      slot.classList.toggle("wide", !!m.wide); slot.classList.toggle("tall", !m.wide);
+    });
     $$("[data-clip]").forEach(function (box) {
-      var m = clips[+box.dataset.clip || 0];
       if (!m) { var f = box.closest("section"); if (f) f.hidden = true; return; }
+      box.classList.toggle("wide", !!m.wide);
       box.innerHTML = '<video controls playsinline preload="none"' + (m.poster ? ' poster="' + esc(asset(m.poster)) + '"' : "") +
         ' aria-label="' + esc(m.label || m.title || "Six to Midnight live clip") + '"><source src="' + esc(asset(m.src)) + '" type="video/mp4"></video>';
     });
     $$("[data-clip-title]").forEach(function (el) {
-      var m = clips[+el.dataset.clipTitle || 0];
       if (m && m.title) el.textContent = m.title; else el.hidden = true;
     });
   }
@@ -304,23 +320,7 @@
         var m = c.mp4;
         return '<div><div class="clip' + (m.tall ? " tall" : "") + '"><video controls playsinline preload="none"' + (m.poster ? ' poster="' + esc(asset(m.poster)) + '"' : "") + ((m.label || m.title) ? ' aria-label="' + esc(m.label || m.title) + '"' : "") + '><source src="' + esc(asset(m.src)) + '" type="video/mp4"></video></div>' +
           (m.title ? '<p class="clip-title">' + esc(m.title) + "</p>" : "") + "</div>";
-      }).join("") + "</div>" + (box.dataset.videos === "nomore" ? "" :
-        '<p class="clip-more"><a class="btn btn-line" data-social="instagram" href="' + esc((C.socials && C.socials.instagram) || "https://www.instagram.com/six.to.midnight/") + '" target="_blank" rel="noopener">More clips on Instagram</a></p>');
-    });
-  }
-
-  // ---------- Instagram reels as stand-in video proof ----------
-  function renderReels() {
-    var reels = (C.reels || []).filter(function (r) { return r && r.url; });
-    if (!reels.length) return; // keep the plain "Watch on Instagram" button
-    $$("[data-reels]").forEach(function (box) {
-      var extra = box.dataset.reels === "clip"
-        ? '<a class="btn btn-line" href="mailto:' + esc(EMAIL) + "?subject=" + encodeURIComponent("Clip request") + '">Ask for a clip</a>' : "";
-      box.innerHTML = reels.map(function (r, i) {
-        // data-reels="line": every reel is an outline button (the page has its own single primary button)
-        var hot = !i && box.dataset.reels !== "line";
-        return '<a class="btn ' + (hot ? "btn-hot" : "btn-line") + '" href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.label || "Watch on Instagram") + "</a>";
-      }).join("") + extra;
+      }).join("") + "</div>";
     });
   }
 
@@ -362,7 +362,24 @@
       a.href = "mailto:" + EMAIL + (sub ? "?subject=" + encodeURIComponent(sub) : "");
       if (a.hasAttribute("data-email-text")) a.textContent = EMAIL;
     });
-    $$("[data-presskit]").forEach(function (a) { if (C.pressKitUrl) { a.href = asset(C.pressKitUrl); a.hidden = false; } });
+    $$("[data-presskit]").forEach(function (a) { if (C.pressKitUrl) { a.href = asset(C.pressKitUrl); a.hidden = false; } else a.hidden = true; });
+    // Facebook reviews: only once reviewsUrl is set in config (Jeff confirms reviews are on).
+    $$("[data-reviews]").forEach(function (el) {
+      if (!C.reviewsUrl) { el.hidden = true; return; }
+      var a = el.tagName === "A" ? el : $("a", el);
+      if (a) a.href = C.reviewsUrl;
+      el.hidden = false;
+    });
+    // "We help spread the word": only claim the email list once a signup tool is connected.
+    $$("[data-if-newsletter]").forEach(function (el) { el.hidden = !C.newsletterAction; });
+    // Crowd photos: hidden until config has some.
+    $$("[data-crowd]").forEach(function (box) {
+      var ph = (C.crowdPhotos || []).filter(function (p) { return p && p.src; }).slice(0, 3);
+      box.hidden = !ph.length;
+      box.innerHTML = ph.map(function (p) {
+        return '<div class="tint"><img src="' + esc(asset(p.src)) + '" alt="' + esc(p.alt || "") + '"' + (p.width ? ' width="' + +p.width + '" height="' + +p.height + '"' : "") + ' loading="lazy"></div>';
+      }).join("");
+    });
     $$("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
   }
 
@@ -388,7 +405,79 @@
       // Mailchimp / Kit embed forms: post natively in a new tab (their own confirm page).
       form.action = C.newsletterAction; form.method = "post"; form.target = "_blank";
       input.name = C.newsletterEmailField || "EMAIL";
-      say("You're in. We'll email when the next show is booked.");
+      say("You're in. We'll email you when the next show is booked.");
+    });
+  }
+
+  // ---------- "Bring us to your bar": share the booking page ----------
+  // Message from config (shareMessage) + the booking page link (siteUrl + "book/", or this site's own book/ page).
+  function bookUrl() { return C.siteUrl ? C.siteUrl.replace(/\/?$/, "/") + "book/" : new URL(ROOT + "book/", location.href).href; }
+  function wireShare() {
+    var prev = $("[data-share-msg]");
+    if (!prev) return;
+    var url = bookUrl();
+    var text = (C.shareMessage || "Hey, you should book Six to Midnight. Here's their booking page:") + " " + url;
+    prev.innerHTML = esc(C.shareMessage || "") + ' <span class="url">' + esc(url) + "</span>";
+    var shareBtn = $("[data-share]"), copyBtn = $("[data-copy]"), done = $("[data-copied]");
+    var tell = function (t) { done.textContent = t; done.hidden = false; };
+    function fallbackCopy() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    }
+    function copy() {
+      var p = navigator.clipboard && window.isSecureContext ? navigator.clipboard.writeText(text) : Promise.reject();
+      p.then(function () { return true; }, function () { return fallbackCopy(); }).then(function (ok) {
+        if (ok) { tell("Copied. Paste it wherever you're sending it."); return; }
+        // Couldn't reach the clipboard: select the message so it can be copied by hand.
+        var r = document.createRange(); r.selectNodeContents(prev);
+        var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        tell("Couldn't copy it here. The message is selected, so copy it from your menu.");
+      });
+    }
+    if (navigator.share && shareBtn) {
+      shareBtn.hidden = false;
+      shareBtn.addEventListener("click", function () { navigator.share({ text: text }).catch(function () {}); });
+    } else if (copyBtn) { copyBtn.classList.remove("btn-line"); copyBtn.classList.add("btn-hot"); }
+    if (copyBtn) copyBtn.addEventListener("click", copy);
+  }
+
+  // ---------- "Bring us to your bar": suggest a venue (private, never shown on the site) ----------
+  function wireSuggest() {
+    var form = $("[data-suggest]");
+    if (!form) return;
+    var msg = $("[data-suggest-msg]"), btn = $("button[type=submit]", form), f = form.elements;
+    var say = function (html, bad) { msg.innerHTML = html; msg.classList.toggle("err", !!bad); msg.hidden = false; };
+    var mailLink = '<a href="mailto:' + esc(EMAIL) + '">' + esc(EMAIL) + "</a>";
+    var END = C.venueSuggestAction || "";
+    var heads = $("[data-suggest-heads]");
+    if (heads) heads.hidden = !!END;
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var venue = f.venue.value.trim(), town = f.town.value.trim(), mail = f.email.value.trim();
+      if (!venue) { say("Add the bar's name first.", true); f.venue.focus(); return; }
+      if (!town) { say("What town is it in?", true); f.town.focus(); return; }
+      if (mail && !EMAIL_RE.test(mail)) { say("That email doesn't look right. Mind checking it?", true); f.email.focus(); return; }
+      var howEl = $("input[name=how]:checked", form), how = howEl ? howEl.parentNode.textContent.trim() : "";
+      var subject = "Bar suggestion: " + venue + ", " + town;
+      if (END) {
+        var data = new FormData(form);
+        data.set("how", how); data.append("_subject", subject);
+        btn.disabled = true; say("Sending...");
+        fetch(END, { method: "POST", body: data, headers: { Accept: "application/json" } })
+          .then(function (r) { if (!r.ok) throw new Error(r.status); form.reset(); say("Thanks, we got it. We'll reach out to them."); })
+          .catch(function () { say("That didn't go through. Try again, or email us at " + mailLink + ".", true); })
+          .then(function () { btn.disabled = false; });
+        return;
+      }
+      // No endpoint yet: nothing is saved, so open a prefilled email to the band inbox.
+      var body = ["Bar or venue: " + venue, "Town: " + town, "How I know it: " + how,
+        "Manager's name or contact: " + f.contact.value.trim(), "My email: " + mail].join("\n");
+      say("This opens an email to us with the details filled in, so you just hit send.<br>Nothing opened? Email " + mailLink + ".");
+      location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
     });
   }
 
@@ -422,7 +511,7 @@
         fetch(C.bookingFormAction, { method: "POST", body: data, headers: { Accept: "application/json" } })
           .then(function (r) {
             if (!r.ok) throw new Error(r.status);
-            form.reset(); say("Got it, thanks! We'll check the calendar and get back to you at the email you gave us.");
+            form.reset(); say("Thanks, we got it. We'll check our calendar and email you back.");
           })
           .catch(function () { say("That didn't go through. Try again, or email us at " + mailLink + ".", true); })
           .then(function () { btn.disabled = false; });
@@ -436,7 +525,7 @@
     });
   }
 
-  renderShareMeta(); renderLinks(); renderReels(); renderRider(); renderSongs(); renderQuotes(); renderQuoteRow(); renderFeatureClip(); renderVideos(); wireNewsletter(); wireBooking();
+  renderShareMeta(); renderLinks(); renderRider(); renderSongs(); renderQuotes(); renderFeatureClip(); renderVideos(); wireNewsletter(); wireBooking(); wireShare(); wireSuggest();
   // The next-show ticket grows once gigs render (and fonts/images load after that), which can push an
   // anchor target like shows/#newsletter down the page. Jump to it again once things settle, unless the
   // visitor has already scrolled on their own. behavior "instant" (not "auto": with html{scroll-behavior:smooth}

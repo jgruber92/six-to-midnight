@@ -132,11 +132,11 @@
         : "Come to a show and yell for it." + (gig ? " Next one: " + DAY[gig.d.getDay()] + ", " + MON[gig.d.getMonth()] + " " + gig.d.getDate() + ", " + gig.venue + ", " + String(gig.town).replace(/, [A-Z]{2}$/, "") + "." : "");
     } else {
       title = "Added to the list";
-      msg = "We'll vote on it at practice. No promises, but good taste gets noticed.";
+      msg = "It's on the list. We'll bring it up at practice.";
       var near = nearMisses(d.song, d.artist);
-      if (near.length === 1) add = "We play " + near[0].t + " by " + near[0].a + ". If that's the one, yell for it!";
-      else if (near.length > 1) add = "Close! We play: " + near.map(function (x) { return x.t; }).join(" / ") + ". If it's one of those, yell for it.";
-      else if (d.live) add = "Not in tonight's set, sorry. Request one we know and we'll make it up to you.";
+      if (near.length === 1) add = "We play " + near[0].t + " by " + near[0].a + ". If that's the one, yell for it.";
+      else if (near.length > 1) add = "We play " + near.map(function (x) { return x.t; }).join(" / ") + ". If it's one of those, yell for it.";
+      else if (d.live) add = "That one's not in the set yet. Pick one we play and we'll try to get to it.";
     }
     done.dataset.state = hit ? "inset" : "new";
     $("doneSong").textContent = d.song + (d.artist ? " · " + d.artist : "");

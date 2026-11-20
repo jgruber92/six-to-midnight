@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shows | Six to Midnight, 90s &amp; 2000s Rock in Central Mass</title>
-<meta name="description" content="Upcoming Six to Midnight shows. Dates, venues and times for our next nights of 90s and 2000s rock. Sign up to hear about the next one.">
+<title>Shows | Six to Midnight, 90s and 2000s rock in Central Mass</title>
+<meta name="description" content="Upcoming Six to Midnight shows in Central Mass, with dates, times and directions.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Six to Midnight">
-<meta property="og:title" content="Six to Midnight Shows">
-<meta property="og:description" content="Where to catch Six to Midnight next. 90s and 2000s rock, live and loud, in Central Mass.">
+<meta property="og:title" content="Six to Midnight shows">
+<meta property="og:description" content="Where Six to Midnight is playing next. 90s and 2000s rock in Central Mass.">
 <meta property="og:image" content="https://jgruber92.github.io/six-to-midnight/img/og.jpg">
 <meta property="og:url" content="https://jgruber92.github.io/six-to-midnight/shows/">
 <link rel="canonical" href="https://jgruber92.github.io/six-to-midnight/shows/">
@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=9">
+<link rel="stylesheet" href="../css/style.css?v=13">
 </head>
 <body data-root="../">
 <a class="skip" href="#main">Skip to content</a>
@@ -49,7 +49,7 @@
   <div class="wrap">
     <p class="crumbs"><a href="../">Home</a> / Shows</p>
     <h1>Come see <span>us</span></h1>
-    <p class="lede">Here's where we'll be next. Bring the friend who still knows every word to The Middle.</p>
+    <p class="lede">Here's where we're playing next. Bring the friend who still knows every word to The Middle.</p>
   </div>
 </header>
 
@@ -72,30 +72,45 @@
   <div class="wrap">
     <p class="label">Newsletter</p>
     <h2 id="nl-h">Hear about the next one</h2>
-    <p class="intro">One email when we book a show. That's it. No spam, we're too busy rehearsing.</p>
+    <p class="intro">We send one email when we book a show. That's all we use it for.</p>
     <form data-newsletter novalidate>
       <label for="nl" class="sr-only">Email</label>
       <input class="input" id="nl" type="email" name="EMAIL" placeholder="you@email.com" autocomplete="email" required>
-      <button class="btn btn-hot" type="submit">Sign me up</button>
+      <button class="btn btn-hot" type="submit">Get show emails</button>
     </form>
-    <p class="note-line" data-newsletter-heads hidden>Heads up: signups aren't automatic yet. This opens an email to the band with your address filled in. Just hit send.</p>
+    <p class="note-line" data-newsletter-heads hidden>Signups aren't automatic yet. This opens an email to us with your address filled in, so you just hit send.</p>
     <p class="form-msg" data-newsletter-msg role="status" hidden></p>
 
     <h2 class="follow-h">Follow along</h2>
-    <p class="follow-p">Clips, photos and show news go up on Instagram and Facebook.</p>
+    <p class="follow-p">We post clips, photos and new dates on Instagram and Facebook.</p>
     <div class="follow">
       <a class="btn btn-line" data-social="instagram" href="https://www.instagram.com/six.to.midnight/" target="_blank" rel="noopener">Follow on Instagram</a>
       <a class="btn btn-line" data-social="facebook" href="https://www.facebook.com/sixtomidnight6200" target="_blank" rel="noopener">Follow on Facebook</a>
     </div>
+    <!-- Shows only once reviewsUrl is set in js/config.js -->
+    <p class="review-nudge" data-reviews hidden><span>Been to a show? Leave us a review on Facebook. It helps bars decide to book us.</span><a href="#" target="_blank" rel="noopener">Leave a review &rarr;</a></p>
+  </div>
+</section>
+
+<section class="bring" id="bring-us" aria-labelledby="bring-h">
+  <div class="wrap">
+    <aside class="barblock">
+      <div>
+        <p class="label">Know a bar?</p>
+        <h2 class="h3" id="bring-h">Bring us to your bar</h2>
+        <p>If there's a bar you think should book us, tell us about it, or send them our booking page yourself. A word from a regular goes a long way with an owner.</p>
+      </div>
+      <div class="row"><a class="btn btn-hot btn-sm" href="../suggest/">Tell us about it</a></div>
+    </aside>
   </div>
 </section>
 
 <section class="nextstep" aria-labelledby="ns-shows">
   <div class="wrap"><div class="card">
     <p class="label">Next up</p>
-    <h2 id="ns-shows">Know the words?</h2>
-    <p><span data-song-count>41</span> songs of 90s and 2000s rock. See if yours is on the list.</p>
-    <div class="row"><a class="btn btn-hot" href="../songs/">Check the list</a><a class="btn btn-line" href="../book/">Book us</a></div>
+    <h2 id="ns-shows">See the song list</h2>
+    <p>Check if we play your song before the show.</p>
+    <div class="row"><a class="btn btn-hot" href="../songs/">See the songs</a><a class="btn btn-line" href="../book/">Book us</a></div>
   </div></div>
 </section>
 </main>
@@ -112,12 +127,12 @@
       <a class="mail" data-email data-email-text href="mailto:sixtomidnight6200@gmail.com">sixtomidnight6200@gmail.com</a>
     </div>
     <p>Six to Midnight · 90s &amp; 2000s rock · Central Mass</p>
-    <p class="small"><a href="../request/">Request a song</a><a href="../shows/#newsletter">Get show emails</a></p>
+    <p class="small"><a href="../request/">Request a song</a><a href="../suggest/">Bring us to your bar</a><a href="../press-kit/">Press kit</a><a href="../shows/#newsletter">Get show emails</a></p>
     <p>&copy; <span data-year>2026</span> Six to Midnight</p>
   </div>
 </footer>
 
-<script src="../js/config.js?v=9"></script>
-<script src="../js/main.js?v=9"></script>
+<script src="../js/config.js?v=13"></script>
+<script src="../js/main.js?v=13"></script>
 </body>
 </html>

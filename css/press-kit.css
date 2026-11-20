@@ -1,0 +1,91 @@
+/* Six to Midnight · press kit (press-kit/). From design/round-3/c-press-kit.html.
+   Paper-white so screen = print. Stage Light shows up as the red/purple rule, accents and the tinted photo.
+   Prints to two letter pages: page 1 pitch, page 2 logistics. */
+:root{--ink:#140D1C;--soft:#4A3F57;--line:#D9D1E3;--red:#D90A28;--purple:#9A12B0;--grad:linear-gradient(90deg,#FF2A3D,#C21DD8);--night:#0A0710;--display:"Bebas Neue",Impact,sans-serif;--label:"Oswald","Arial Narrow",sans-serif;--body:"Inter",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{background:#1E1828;color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;padding:16px 0 48px;-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{display:block;max-width:100%}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #FF5A8A;outline-offset:3px}
+.skip{position:absolute;left:12px;top:-60px;z-index:10;background:#fff;color:var(--ink);padding:10px 16px;font-weight:600;text-decoration:none}
+.skip:focus{top:12px}
+/* Live site: unknown facts read "Ask us" on screen and in print. To see what is still missing, add ?todo to the URL. */
+.todo{display:none}
+.ask{display:inline}
+html.show-todo .todo{display:inline;outline:1px dashed #FF5A8A;outline-offset:2px;color:#B0124A}
+html.show-todo .ask{display:none}
+.bar{width:min(8.5in,100% - 24px);margin:0 auto 14px;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;justify-content:space-between;color:#F6F1FF}
+.bar p{font-size:.9rem;color:#C9BED8}
+.bar a{color:#F6F1FF;display:inline-flex;align-items:center;min-height:44px;text-underline-offset:3px}
+.bar .hint{flex:1 1 200px}
+.bar button{min-height:44px;padding:0 20px;border:0;background:linear-gradient(90deg,#D90A28,#9A12B0);color:#fff;font-family:var(--label);letter-spacing:.18em;text-transform:uppercase;font-weight:600;cursor:pointer}
+.sheet{width:min(8.5in,100% - 24px);margin:0 auto 18px;background:#fff;padding:28px 18px;box-shadow:0 20px 50px #0009;position:relative}
+.sheet::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--grad)}
+@media(min-width:700px){.sheet{padding:.5in .55in}}
+.lbl{font-family:var(--label);font-weight:500;text-transform:uppercase;letter-spacing:.26em;font-size:.72rem;color:var(--purple)}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:.9;letter-spacing:.01em}
+
+/* masthead */
+.mast{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.mast img{width:62px;height:auto}
+.mast h1{font-size:clamp(2.4rem,11vw,4rem)}
+.mast .sub{font-family:var(--label);letter-spacing:.24em;text-transform:uppercase;font-size:.75rem;color:var(--soft);display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin-top:4px}
+.mast .sub .box{border:1px solid var(--ink);color:var(--ink);padding:2px 8px 1px}
+.mast .contact{grid-column:1 / -1;font-size:.85rem;color:var(--soft);display:flex;flex-wrap:wrap;gap:0 16px}
+.mast .contact b{color:var(--ink);font-family:var(--label);letter-spacing:.2em;text-transform:uppercase;font-size:.72rem;font-weight:500;align-self:center}
+.mast .contact a{text-decoration:none;overflow-wrap:anywhere;display:inline-block;padding:10px 0;margin:-6px 0}
+@media(min-width:700px){.mast{grid-template-columns:auto 1fr auto}.mast .contact{grid-column:auto;flex-direction:column;text-align:right}.mast .contact a{padding:0;margin:0}}
+
+/* photo + pitch */
+.photo{position:relative;margin-top:16px;aspect-ratio:3/1.5;overflow:hidden;background:var(--night);isolation:isolate}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;filter:grayscale(1) contrast(1.2)}
+.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#FF2A3D,#C21DD8);mix-blend-mode:color;opacity:.8}
+.pitch{font-size:1.08rem;font-weight:600;line-height:1.45;margin:16px 0 4px;max-width:66ch}
+
+/* blocks */
+.cols{display:grid;gap:18px;margin-top:16px}
+@media(min-width:700px){.cols{grid-template-columns:1.25fr 1fr;gap:26px}}
+.block h2{font-size:1.9rem;margin:2px 0 8px}
+.facts,.needs{list-style:none;border-top:1px solid var(--line)}
+.facts li,.needs li{display:grid;grid-template-columns:7.5em 1fr;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.needs li{padding:8px 0}
+.facts li > span:first-child,.needs li > span:first-child{font-family:var(--label);letter-spacing:.14em;text-transform:uppercase;font-size:.72rem;color:var(--soft);padding-top:2px}
+.bio{font-size:.9rem;color:var(--soft);margin-top:10px}
+.watch{display:grid;grid-template-columns:100px 1fr;gap:14px;align-items:center;border:2px solid var(--ink);padding:12px}
+.watch .qr svg{width:100px;height:100px;display:block}
+.watch p{font-size:.9rem}
+.watch .url{font-family:var(--label);letter-spacing:.04em;font-size:.82rem;color:var(--purple);overflow-wrap:anywhere;margin-top:4px}
+.watch .url a{text-decoration:none}
+.quotes{margin-top:14px;display:grid;gap:10px}
+.quotes figure{border-left:3px solid var(--red);padding-left:12px}
+.quotes blockquote{font-family:var(--display);font-size:1.45rem;line-height:1}
+.quotes figcaption{font-size:.8rem;color:var(--soft);margin-top:4px}
+
+/* page 2 */
+.plot{border:2px solid var(--ink);padding:10px;margin-top:6px}
+.plot svg{width:100%;max-width:6.2in;margin:0 auto;height:auto;display:block}
+.plot .note{font-size:.8rem;color:var(--soft);margin-top:6px}
+.cta{background:var(--night);color:#F6F1FF;padding:16px 18px;display:grid;gap:4px}
+.cta .lbl{color:#FF5A8A}
+.cta h2{font-size:2.2rem}
+.cta p{font-size:.92rem;color:#C9BED8;overflow-wrap:anywhere}
+.cta b{color:#fff}
+.cta a,.watch .url a{text-decoration:none;display:inline-block;padding:12px 0;margin:-12px 0}
+@media print{.cta a,.watch .url a{padding:0;margin:0}}
+.foot{margin-top:14px;font-family:var(--label);letter-spacing:.24em;text-transform:uppercase;font-size:.68rem;color:var(--soft);text-align:center}
+
+@media print{
+  @page{size:letter;margin:.4in}
+  body{background:#fff;padding:0;font-size:10.5pt}
+  .bar,.skip{display:none}
+  .sheet{width:auto;box-shadow:none;margin:0;padding:.15in .1in 0;break-after:page}
+  .sheet:last-child{break-after:auto}
+  .sheet::before,.photo,.photo::after,.cta,.plot circle{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .mast{grid-template-columns:auto 1fr auto}.mast .contact{grid-column:auto;flex-direction:column;text-align:right}.mast .contact a{padding:0;margin:0}
+  .cols{grid-template-columns:1.25fr 1fr;gap:.3in}
+  .mast h1{font-size:3.6rem}
+  /* missing facts: no [NEEDS] text on paper, a neutral line instead */
+  .todo{display:none}
+  .ask{display:inline}
+}

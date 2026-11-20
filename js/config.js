@@ -25,7 +25,7 @@ window.STM = {
   //   "8pm", "8:30 PM", "9 p.m.", "8-11pm", "8 to 11pm", "8pm-12am" (no end time = 3 hours).
   //   Blank or anything else ("TBA") = all-day event and "Time TBA" on the site.
   gigs: [
-    { date: "2027-02-20", venue: "Central Tavern", town: "Milford, MA", time: "", link: "" },
+    { date: "2027-02-20", venue: "Brother's Tavern", town: "Milford, MA", time: "8-11pm", link: "" },
   ],
 
 
@@ -34,10 +34,11 @@ window.STM = {
   // RULE: only quotes posted publicly (social media, public reviews) or used with the person's permission.
   // Never quote private emails or DMs without permission.
   quotes: [
-    // Order matters: the first 3 show on Home, the first one leads on /book/. Whole-band praise leads.
-    { text: "You guys kicked ass last night!", who: "Karen J.", where: "after Valley Pub" },
+    // Order matters: the first one leads on /book/. Whole-band praise leads.
+    // home: true = one of the two quotes on Home. kit: true = the quote on the press kit (press-kit/).
+    { text: "You guys kicked ass last night!", who: "Karen J.", where: "after Valley Pub", home: true },
     { text: "Show was amazing.", who: "Damien L.", where: "after Pinz, Milford" },
-    { text: "Fantastic, tight band. Singer's got some unbelievable chops!", who: "Jorge C.", where: "on Facebook" },
+    { text: "Fantastic, tight band. Singer's got some unbelievable chops!", who: "Jorge C.", where: "on Facebook", home: true, kit: true },
     { text: "I have goosebumps. Sooo good, you guys!", who: "Karina R.", where: "on our Creep cover" },
     { text: "Guitar on point! Great cover!", who: "Lisa N.", where: "on our Creep cover" },
     { text: "This song is SUCH a banger.", who: "@literary_nat", where: "on Instagram" },
@@ -51,6 +52,23 @@ window.STM = {
   // Song requests (/request/ page + QR card). Paste a Formspree or Google Form endpoint.
   // Empty = the form opens a prefilled email to the band inbox instead.
   songRequestAction: "",
+
+  // "Bring us to your bar" venue suggestions (suggest/ page). Same setup as song requests:
+  // paste a Formspree or Google Form endpoint. Empty = the form opens a prefilled email to the band inbox.
+  // Suggestions are private: they are never shown on the site.
+  venueSuggestAction: "",
+
+  // The ready-made message fans share with a bar (suggest/ page). The booking page link
+  // (siteUrl + "book/") is added to the end automatically.
+  shareMessage: "Hey, you should book Six to Midnight. They're a 90s and 2000s rock band from Central Mass, they bring their own PA, and they're a lot of fun. They're @six.to.midnight on Instagram. Here's their booking page:",
+
+  // Facebook reviews link (Shows + Book us). Leave EMPTY until Jeff confirms reviews are turned on
+  // for the Facebook page, e.g. "https://www.facebook.com/sixtomidnight6200/reviews". Empty = the links stay hidden.
+  reviewsUrl: "",
+
+  // Crowd photos for the "We help spread the word" block on /book/. Empty = the photo row stays hidden.
+  // e.g. { src: "img/gallery/crowd-01.jpg", alt: "Crowd singing along at Brother's Tavern", width: 1200, height: 1200 }
+  crowdPhotos: [],
 
   // Booking form. Paste a Formspree (or similar) endpoint here.
   // Empty = the form opens an email to the band inbox instead.
@@ -104,7 +122,7 @@ window.STM = {
       ["Passion's Killing Floor", "HIM"],
       ["Burn It to the Ground", "Nickelback"],
     ],
-    "Bonus: one from the 80s": [
+    "One from the 80s": [
       ["Wanted Dead Or Alive", "Bon Jovi"],
     ],
   },
@@ -132,12 +150,16 @@ window.STM = {
   // 1) Self-hosted MP4s: prep with scripts/prep_video.sh, put them in media/, then add e.g.
   //    { src: "media/creep-brothers-tavern.mp4", poster: "img/hero/full-band-live-brothers-tavern-moody.jpg", title: "Creep, Brother's Tavern" }
   //    Add tall: true for vertical phone video (shown as phone-shaped players, two across).
+  //   Add wide: true for a landscape (16:9) highlight. The first wide clip becomes the featured clip on
+  //   Home and Book us (full-width frame); with no wide clip, the first clip stays featured as a phone clip.
+  //   e.g. { src: "media/highlight-brothers-tavern.mp4", poster: "img/video/highlight-brothers-tavern.jpg",
+  //          title: "Live at Brother's Tavern, Milford", label: "Six to Midnight highlight video, Brother's Tavern", wide: true },
   clips: [
     // title = caption shown under the clip; label = what screen readers hear.
-    { src: "media/freeplay-arcade-full-band.mp4", poster: "img/video/freeplay-arcade-full-band.jpg", title: "Live at Free Play Arcade. Full band, full volume.", label: "Six to Midnight live at Free Play Arcade, full band", tall: true },
-    { src: "media/freeplay-arcade-brandon.mp4", poster: "img/video/freeplay-arcade-brandon.jpg", title: "Up close at Free Play Arcade.", label: "Brandon Ekvall singing live at Free Play Arcade", tall: true },
+    { src: "media/freeplay-arcade-full-band.mp4", poster: "img/video/freeplay-arcade-full-band.jpg", title: "Full band at Free Play Arcade", label: "Six to Midnight live at Free Play Arcade, full band", tall: true },
+    { src: "media/freeplay-arcade-brandon.mp4", poster: "img/video/freeplay-arcade-brandon.jpg", title: "Up front at Free Play Arcade", label: "Brandon Ekvall singing live at Free Play Arcade", tall: true },
   ],
-  // Instagram reels, shown as buttons on the Watch page.
+  // Instagram reels. Not shown on the site anymore (Watch has one "More on Instagram" link); kept for reference.
   reels: [
     { label: "Watch our Creep cover", url: "https://www.instagram.com/reel/DS-GY8YDJ-e/" },
     { label: "Watch: I Believe In A Thing Called Love", url: "https://www.instagram.com/reel/DSm3OgvjSZK/" },
@@ -147,17 +169,21 @@ window.STM = {
   videos: [],
   // Empty = the video sections show "Clips coming soon" with an Instagram link.
 
-  // Setup / tech rider on /book/. Rows with an empty value are hidden on the site.
+  // Setup / tech rider on /book/ and the press kit (press-kit/). Rows with an empty value are hidden on /book/;
+  // on the press kit they show a [NEEDS] placeholder on screen and "Ask us" when printed. `need` = the placeholder hint.
   // Still needed from Jeff: stage size (e.g. "About 15 x 10 ft"), power (outlets / circuits),
   // load-in time (e.g. "60 min before start"), sets (count + length, e.g. "2 or 3 sets, flexible").
   rider: [
     { label: "PA and sound", value: "We bring our own" },
-    { label: "Stage space", value: "" },
-    { label: "Power", value: "" },
-    { label: "Load-in", value: "" },
-    { label: "Sets", value: "" },
+    { label: "Stage space", value: "", need: "e.g. about 15 x 10 ft" },
+    { label: "Power", value: "At least 2 to 3 outlets" },
+    { label: "Load-in", value: "", need: "e.g. 60 minutes before start" },
+    { label: "Set length", value: "Up to 3.5 hours, or shorter if you need" },
   ],
 
-  // Press kit PDF (e.g. "media/six-to-midnight-press-kit.pdf"). Empty = the button stays hidden.
-  pressKitUrl: "",
+  // Stage plot note on the press kit. Empty = [NEEDS] placeholder on screen, left off when printed.
+  stagePlotNote: "Shown from the audience. Drums center back with bass next to them, vocals front center, a guitar on each side, PA at the front corners.",
+
+  // Press kit: the printable page (Print > Save as PDF makes the PDF). Empty = the button stays hidden.
+  pressKitUrl: "press-kit/",
 };

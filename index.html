@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Six to Midnight | 90s &amp; 2000s Rock Cover Band, Central Mass</title>
-<meta name="description" content="The 90s and 2000s rock you know every word to, played live by a five-piece band from Central Mass. See the next show and watch a clip.">
+<title>Six to Midnight | 90s and 2000s rock band, Central Mass</title>
+<meta name="description" content="Six to Midnight is a five-piece 90s and 2000s rock cover band from Central Mass. See the next show, watch a clip, or book us.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Six to Midnight">
-<meta property="og:title" content="Six to Midnight | 90s &amp; 2000s Rock">
+<meta property="og:title" content="Six to Midnight | 90s and 2000s rock">
 <meta property="og:description" content="The rock your inner millennial is dying to hear. Five-piece cover band from Central Mass.">
 <meta property="og:image" content="https://jgruber92.github.io/six-to-midnight/img/og.jpg">
 <meta property="og:url" content="https://jgruber92.github.io/six-to-midnight/">
@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=9">
+<link rel="stylesheet" href="css/style.css?v=13">
 <script>
 // Old one-page links (/#shows, /#songs ...) go to the new pages.
 (function(){var m={"#shows":"shows/","#next":"shows/","#newsletter":"shows/#newsletter","#songs":"songs/","#watch":"watch/","#photos":"watch/#photos","#about":"about/","#find":"songs/#find"};var t=m[location.hash];if(t)location.replace(t);})();
@@ -48,7 +48,7 @@
 </header>
 
 <main id="main">
-<section class="hero" aria-label="Six to Midnight">
+<section class="hero r3" aria-label="Six to Midnight">
   <div class="tint"><img src="img/hero/full-band-live-brothers-tavern-lit.jpg" alt="Six to Midnight playing live on stage at Brother's Tavern" width="1600" height="1147" fetchpriority="high"></div>
   <div class="beam b1" aria-hidden="true"></div><div class="beam b2" aria-hidden="true"></div>
   <div class="wrap">
@@ -57,55 +57,53 @@
     <h1>Six to <span>Midnight</span></h1>
     <p class="boxed">90s &amp; 2000s Rock</p>
     <p class="tag">The rock your inner millennial is dying to hear.</p>
-    <div class="ctas">
-      <a class="btn btn-hot" href="book/">Book us</a>
-      <a class="btn btn-line" href="shows/">See shows</a>
-    </div>
   </div>
 </section>
 
-<div class="ticket">
-  <div class="wrap">
-    <div class="card" data-next="home" aria-live="polite">
-      <div class="info"><p class="label">Next show</p></div>
-    </div>
-  </div>
-</div>
+<!-- The two paths are the hero's buttons. Booker first (goal 1), fan second. -->
+<section class="paths" aria-label="Pick your path">
+  <div class="wrap grid">
+    <article class="door book" aria-labelledby="p-book">
+      <p class="label">For bars &amp; events</p>
+      <h2 id="p-book">Booking a band?</h2>
+      <ul class="proof" aria-label="Quick facts"><li><span data-song-count>41</span> songs</li><li>3+ hours</li><li>Own PA</li></ul>
+      <p class="say">See a clip, the song list and how to check a date.</p>
+      <a class="btn btn-hot" href="book/">Book us</a>
+    </article>
 
-<section class="feat" aria-labelledby="feat-h">
-  <div class="wrap feat-grid">
-    <div class="vid" data-clip="0"></div>
-    <div>
+    <article class="door fan" aria-labelledby="p-fan">
+      <p class="label">For fans</p>
+      <h2 id="p-fan">Coming to a show?</h2>
+      <div data-fan-next aria-live="polite"></div>
+      <a class="btn btn-line" href="shows/">See shows</a>
+      <p class="sub-link">Know a bar that should book us? <a href="suggest/">Bring us to your bar &rarr;</a></p>
+    </article>
+  </div>
+</section>
+
+<!-- One clip, two quotes. Everything else lives on Watch and Book us. -->
+<section class="proof-sec" aria-labelledby="pr-h">
+  <div class="wrap proof-grid" data-clipslot>
+    <div class="proof-head">
       <p class="label">Watch</p>
-      <h2 id="feat-h">This is what it sounds like</h2>
-      <p class="clip-cap" data-clip-title="0"></p>
-      <ul class="stats" aria-label="Quick facts">
-        <li><b data-song-count>41</b><span>songs</span></li>
-        <li><b>3+</b><span>hours</span></li>
-        <li><b>Own</b><span>PA</span></li>
-      </ul>
+      <h2 id="pr-h">See us live</h2>
+    </div>
+    <div class="vid" data-clip></div>
+    <div class="proof-body">
+      <div data-quotes="home"></div>
       <a class="link" href="watch/">More clips and photos &rarr;</a>
     </div>
   </div>
 </section>
 
-<section class="qrow" aria-labelledby="qrow-h">
+<section class="more-links" aria-labelledby="ml-h">
   <div class="wrap">
-    <h2 class="label" id="qrow-h">What people say</h2>
-    <div class="snap" role="region" tabindex="0" aria-label="Quotes, swipe for more" data-quote-row="3"></div>
-    <p class="swipe-hint" aria-hidden="true">Swipe for more &rarr;</p>
-  </div>
-</section>
-
-<section class="explore" aria-labelledby="explore-h">
-  <div class="wrap">
-    <h2 class="label" id="explore-h">Dig in</h2>
-    <div class="tiles">
-      <a class="tile" href="shows/"><div class="tint"><img src="img/hero/full-band-live-brothers-tavern-moody.jpg" alt="" width="1600" height="1066" loading="lazy"></div><div class="t-in"><b>Shows</b><small>Where we're playing next.</small></div></a>
-      <a class="tile" href="songs/"><div class="gfx" aria-hidden="true"><span data-song-count>41</span></div><div class="t-in"><b>Songs</b><small><span data-song-count>41</span> songs. Do we play yours?</small></div></a>
-      <a class="tile" href="watch/"><div class="tint"><img src="img/video/freeplay-arcade-full-band.jpg" alt="" width="720" height="1280" loading="lazy"></div><div class="t-in"><b>Watch</b><small>Clips and photos from real nights.</small></div></a>
-      <a class="tile" href="about/"><div class="tint"><img src="img/group/band-group-photo-brick-wall.jpg" alt="" width="1600" height="1066" loading="lazy"></div><div class="t-in"><b>About</b><small>Five people, one loud band.</small></div></a>
-    </div>
+    <h2 class="label" id="ml-h">More</h2>
+    <ul class="rows">
+      <li><a href="songs/"><b>Songs</b><small>The full song list</small><span class="arr" aria-hidden="true">&rarr;</span></a></li>
+      <li><a href="watch/"><b>Watch</b><small>Clips and photos</small><span class="arr" aria-hidden="true">&rarr;</span></a></li>
+      <li><a href="about/"><b>About</b><small>Meet the band</small><span class="arr" aria-hidden="true">&rarr;</span></a></li>
+    </ul>
   </div>
 </section>
 </main>
@@ -122,12 +120,12 @@
       <a class="mail" data-email data-email-text href="mailto:sixtomidnight6200@gmail.com">sixtomidnight6200@gmail.com</a>
     </div>
     <p>Six to Midnight · 90s &amp; 2000s rock · Central Mass</p>
-    <p class="small"><a href="request/">Request a song</a><a href="shows/#newsletter">Get show emails</a></p>
+    <p class="small"><a href="request/">Request a song</a><a href="suggest/">Bring us to your bar</a><a href="press-kit/">Press kit</a><a href="shows/#newsletter">Get show emails</a></p>
     <p>&copy; <span data-year>2026</span> Six to Midnight</p>
   </div>
 </footer>
 
-<script src="js/config.js?v=9"></script>
-<script src="js/main.js?v=9"></script>
+<script src="js/config.js?v=13"></script>
+<script src="js/main.js?v=13"></script>
 </body>
 </html>

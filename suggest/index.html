@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bring us to your bar | Six to Midnight</title>
+<meta name="description" content="Know a bar that should book Six to Midnight? Send them our booking page, or tell us about it.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Six to Midnight">
+<meta property="og:title" content="Bring Six to Midnight to your bar">
+<meta property="og:description" content="Know a bar that should book us? Send them our booking page, or tell us about it. 90s and 2000s rock from Central Mass.">
+<meta property="og:image" content="https://jgruber92.github.io/six-to-midnight/img/og.jpg">
+<meta property="og:url" content="https://jgruber92.github.io/six-to-midnight/suggest/">
+<link rel="canonical" href="https://jgruber92.github.io/six-to-midnight/suggest/">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Six to Midnight on stage at Brother's Tavern">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0A0710">
+<link rel="icon" href="../favicon.ico" sizes="32x32">
+<link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css?v=13">
+</head>
+<body data-root="../">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hdr">
+  <div class="wrap bar">
+    <a class="home" href="../"><img src="../img/logo.svg" alt="Six to Midnight home" width="37" height="32"></a>
+    <nav class="tabs" aria-label="Main">
+      <a href="../">Home</a>
+      <a href="../shows/" aria-current="true">Shows</a>
+      <a href="../songs/">Songs</a>
+      <a href="../watch/">Watch</a>
+      <a href="../about/">About</a>
+    </nav>
+    <a class="btn btn-hot btn-sm" href="../book/">Book us</a>
+  </div>
+</header>
+
+<main id="main">
+<header class="band">
+  <div class="tint"><img src="../img/hero/full-band-live-brothers-tavern-moody.jpg" alt="" width="1600" height="1066" fetchpriority="high"></div>
+  <div class="wrap">
+    <p class="crumbs"><a href="../shows/">Shows</a> / Bring us to your bar</p>
+    <h1>Bring us to <span>your bar</span></h1>
+    <p class="lede">If there's a bar you think should book us, tell us about it, or send them our booking page yourself. A word from a regular goes a long way with an owner.</p>
+  </div>
+</header>
+
+<section class="after-band suggest" aria-label="Two ways to help">
+  <div class="wrap two-col">
+
+    <!-- 1. Share: the fastest thing a fan can do. Message from js/config.js (shareMessage + siteUrl + "book/"). -->
+    <div class="share-card">
+      <p class="label">Share</p>
+      <h2 id="share-h">Send it to them yourself</h2>
+      <p class="share-line">Copy this into a DM, a comment on the bar's Instagram, or a text to the owner.</p>
+      <p class="msg-preview" data-share-msg>Hey, you should book Six to Midnight. They're a 90s and 2000s rock band from Central Mass, they bring their own PA, and they're a lot of fun. They're @six.to.midnight on Instagram. Here's their booking page: <span class="url">https://jgruber92.github.io/six-to-midnight/book/</span></p>
+      <div class="row">
+        <button class="btn btn-hot" type="button" data-share hidden>Share our booking page</button>
+        <button class="btn btn-line" type="button" data-copy>Copy the message</button>
+      </div>
+      <p class="copied" data-copied role="status" hidden></p>
+      <p class="tag-tip"><span class="at" aria-hidden="true">@</span><span>If you post it, tag <b>@six.to.midnight</b> so we see it.</span></p>
+    </div>
+
+    <!-- 2. Tell us: a private lead for the band. Sends to venueSuggestAction in js/config.js (empty = prefilled email). -->
+    <form class="inq" data-suggest novalidate aria-labelledby="sv-h">
+      <p class="label">Tell us</p>
+      <h2 id="sv-h">Suggest a venue</h2>
+      <div class="two">
+        <label>Bar or venue name<input type="text" name="venue" placeholder="e.g. The Corner Pub" required></label>
+        <label>Town<input type="text" name="town" autocomplete="address-level2" placeholder="Where is it?" required></label>
+      </div>
+      <fieldset class="chips">
+        <legend>How do you know it?</legend>
+        <label><input type="radio" name="how" value="regular">I'm a regular</label>
+        <label><input type="radio" name="how" value="owner">I know the owner or manager</label>
+        <label><input type="radio" name="how" value="work">I work there</label>
+        <label><input type="radio" name="how" value="other">Something else</label>
+      </fieldset>
+      <label>Manager's name or contact <span class="opt">(optional)</span><input type="text" name="contact" aria-describedby="contact-help"><span class="help" id="contact-help">Only if they're OK with you sharing it.</span></label>
+      <label>Your email <span class="opt">(optional)</span><input type="email" name="email" autocomplete="email" placeholder="you@email.com" aria-describedby="email-help"><span class="help" id="email-help">If you want to hear how it goes.</span></label>
+      <button class="btn btn-hot" type="submit">Send it to us</button>
+      <small>We keep these private. We never post the bars people suggest.</small>
+      <small data-suggest-heads hidden>This opens an email to us with the details filled in, so you just hit send.</small>
+      <p class="form-msg" data-suggest-msg role="status" hidden></p>
+    </form>
+  </div>
+</section>
+
+<section class="nextstep" aria-labelledby="ns-suggest">
+  <div class="wrap"><div class="card">
+    <p class="label">Next up</p>
+    <h2 id="ns-suggest">See us live</h2>
+    <p>Dates and times are on the Shows page.</p>
+    <div class="row"><a class="btn btn-hot" href="../shows/">See shows</a><a class="btn btn-line" href="../book/">Book us</a></div>
+  </div></div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img class="logo" src="../img/logo.svg" alt="Six to Midnight" width="70" height="61" loading="lazy">
+    <p class="ruled">Six to Midnight</p>
+    <nav aria-label="Site"><ul class="sitemap"><li><a href="../">Home</a></li><li><a href="../shows/">Shows</a></li><li><a href="../songs/">Songs</a></li><li><a href="../watch/">Watch</a></li><li><a href="../about/">About</a></li><li><a href="../book/">Book us</a></li></ul></nav>
+    <div class="soc">
+      <a data-social="instagram" href="https://www.instagram.com/six.to.midnight/" target="_blank" rel="noopener">Instagram</a>
+      <a data-social="facebook" href="https://www.facebook.com/sixtomidnight6200" target="_blank" rel="noopener">Facebook</a>
+      <a data-social="youtube" href="#" target="_blank" rel="noopener" hidden>YouTube</a>
+      <a class="mail" data-email data-email-text href="mailto:sixtomidnight6200@gmail.com">sixtomidnight6200@gmail.com</a>
+    </div>
+    <p>Six to Midnight · 90s &amp; 2000s rock · Central Mass</p>
+    <p class="small"><a href="../request/">Request a song</a><a href="../suggest/" aria-current="page">Bring us to your bar</a><a href="../press-kit/">Press kit</a><a href="../shows/#newsletter">Get show emails</a></p>
+    <p>&copy; <span data-year>2026</span> Six to Midnight</p>
+  </div>
+</footer>
+
+<script src="../js/config.js?v=13"></script>
+<script src="../js/main.js?v=13"></script>
+</body>
+</html>
