@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Six to Midnight | 90s &amp; 2000s Rock Cover Band, Central Mass</title>
-<meta name="description" content="Six to Midnight plays the 90s and 2000s rock you know every word to. Five-piece cover band from Central Mass. See the next show, watch clips and follow along.">
+<meta name="description" content="The 90s and 2000s rock you know every word to, played live by a five-piece band from Central Mass. See the next show and watch a clip.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Six to Midnight">
 <meta property="og:title" content="Six to Midnight | 90s &amp; 2000s Rock">
@@ -14,7 +14,7 @@
 <link rel="canonical" href="https://jgruber92.github.io/six-to-midnight/">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Six to Midnight on stage at Brother's Tavern in Milford">
+<meta property="og:image:alt" content="Six to Midnight on stage at Brother's Tavern">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0A0710">
 <link rel="icon" href="favicon.ico" sizes="32x32">
@@ -24,21 +24,31 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=9">
+<script>
+// Old one-page links (/#shows, /#songs ...) go to the new pages.
+(function(){var m={"#shows":"shows/","#next":"shows/","#newsletter":"shows/#newsletter","#songs":"songs/","#watch":"watch/","#photos":"watch/#photos","#about":"about/","#find":"songs/#find"};var t=m[location.hash];if(t)location.replace(t);})();
+</script>
 </head>
 <body data-root="">
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="top">
-  <div class="wrap">
-    <a class="home" href="./"><img src="img/logo.svg" alt="Six to Midnight home" width="44" height="38"></a>
-    <nav aria-label="Main"><a href="#watch">Watch</a><a href="#about">About</a><a href="#songs">Songs</a><a href="#shows">Shows</a><a href="#newsletter">Newsletter</a></nav>
-    <div class="top-ctas"><a class="mini" href="#shows">Shows</a><a class="btn btn-hot btn-sm" href="book/">Book us</a></div>
+<header class="hdr">
+  <div class="wrap bar">
+    <a class="home" href="./"><img src="img/logo.svg" alt="Six to Midnight home" width="37" height="32"></a>
+    <nav class="tabs" aria-label="Main">
+      <a href="./" aria-current="page">Home</a>
+      <a href="shows/">Shows</a>
+      <a href="songs/">Songs</a>
+      <a href="watch/">Watch</a>
+      <a href="about/">About</a>
+    </nav>
+    <a class="btn btn-hot btn-sm" href="book/">Book us</a>
   </div>
 </header>
 
 <main id="main">
-<section class="hero" aria-label="Six to Midnight" data-dock-hide>
+<section class="hero" aria-label="Six to Midnight">
   <div class="tint"><img src="img/hero/full-band-live-brothers-tavern-lit.jpg" alt="Six to Midnight playing live on stage at Brother's Tavern" width="1600" height="1147" fetchpriority="high"></div>
   <div class="beam b1" aria-hidden="true"></div><div class="beam b2" aria-hidden="true"></div>
   <div class="wrap">
@@ -47,176 +57,55 @@
     <h1>Six to <span>Midnight</span></h1>
     <p class="boxed">90s &amp; 2000s Rock</p>
     <p class="tag">The rock your inner millennial is dying to hear.</p>
-    <p class="sub"><span data-song-count>41</span> songs. Alice In Chains to Fall Out Boy. Played loud, played live.</p>
     <div class="ctas">
-      <a class="btn btn-hot" href="#next" data-hero-next>See the next show</a>
-      <a class="btn btn-line" href="book/">Book the band</a>
+      <a class="btn btn-hot" href="book/">Book us</a>
+      <a class="btn btn-line" href="shows/">See shows</a>
     </div>
   </div>
 </section>
 
-<div class="ticket" id="next" data-dock-hide>
+<div class="ticket">
   <div class="wrap">
-    <div class="card" data-next aria-live="polite">
+    <div class="card" data-next="home" aria-live="polite">
       <div class="info"><p class="label">Next show</p></div>
     </div>
   </div>
 </div>
 
-<section class="video" id="watch">
-  <div class="wrap">
-    <div class="head">
+<section class="feat" aria-labelledby="feat-h">
+  <div class="wrap feat-grid">
+    <div class="vid" data-clip="0"></div>
+    <div>
       <p class="label">Watch</p>
-      <h2>Hear it before you see it</h2>
-      <p data-videos-intro hidden>Phone footage from real nights. No studio tricks.</p>
-    </div>
-    <div data-videos>
-      <div class="frame">
-        <div class="tint"><img src="img/hero/full-band-live-brothers-tavern-moody.jpg" alt="" width="1600" height="1066" loading="lazy"></div>
-        <div>
-          <h3>Watch us on Instagram</h3>
-          <div class="row" data-reels>
-            <a class="btn btn-hot" data-social="instagram" href="https://www.instagram.com/six.to.midnight/" target="_blank" rel="noopener">Watch on Instagram</a>
-            <a class="btn btn-line" href="#shows">See the next show</a>
-          </div>
-          <p class="soon"><i aria-hidden="true"></i> Full live clips coming soon</p>
-        </div>
-      </div>
+      <h2 id="feat-h">This is what it sounds like</h2>
+      <p class="clip-cap" data-clip-title="0"></p>
+      <ul class="stats" aria-label="Quick facts">
+        <li><b data-song-count>41</b><span>songs</span></li>
+        <li><b>3+</b><span>hours</span></li>
+        <li><b>Own</b><span>PA</span></li>
+      </ul>
+      <a class="link" href="watch/">More clips and photos &rarr;</a>
     </div>
   </div>
 </section>
 
-<section class="about" id="about">
+<section class="qrow" aria-labelledby="qrow-h">
   <div class="wrap">
-    <div class="grid">
-      <div class="tint"><img src="img/group/band-group-photo-brick-wall.jpg" alt="The band posed against a signed brick wall: Allan, Brandon, Sam, Jeff and Kurtis" width="1600" height="1066" loading="lazy"></div>
-      <div class="copy">
-        <p class="label">The band</p>
-        <h2>Who we are</h2>
-        <p><strong>Jeff and Kurtis started the band together, and they've been best friends for the last 25 years.</strong></p>
-        <p>Now we're five guys from Central Mass playing the 90s and 2000s rock you grew up blasting in the car. Grunge, nu metal, pop punk, all of it. If you know every word, that's the point.</p>
-        <p>We play bars, parties and private events. Give us a stage and a crowd that wants to sing along and we're good.</p>
-      </div>
-    </div>
-    <ul class="lineup">
-      <li class="member">
-        <div class="pic"><div class="tint"><img src="img/members/vocals-brandon.jpg" alt="Brandon Ekvall throwing rock horns on stage" width="599" height="900" loading="lazy"></div><div class="cap"><h3>Brandon Ekvall</h3><span>Vocals</span></div></div>
-        <p class="blurb">Hits the notes so you don't have to.</p>
-      </li>
-      <li class="member">
-        <div class="pic"><div class="tint"><img src="img/members/guitar-jeff.jpg" alt="Jeff Gruber playing guitar" width="900" height="599" loading="lazy"></div><div class="cap"><h3>Jeff Gruber</h3><span>Guitar</span></div></div>
-        <p class="blurb">Co-founder.</p>
-      </li>
-      <li class="member">
-        <div class="pic"><div class="tint"><img src="img/members/guitar-allan.jpg" alt="Allan Paoletti playing a Les Paul" width="900" height="599" loading="lazy"></div><div class="cap"><h3>Allan Paoletti</h3><span>Guitar</span></div></div>
-        <p class="blurb">The other half of the guitar wall.</p>
-      </li>
-      <li class="member">
-        <div class="pic"><div class="tint"><img src="img/members/bass-sam.jpg" alt="Sam Francis playing bass" width="599" height="900" loading="lazy"></div><div class="cap"><h3>Sam Francis</h3><span>Bass</span></div></div>
-        <p class="blurb">Holds down the low end.</p>
-      </li>
-      <li class="member kurtis">
-        <div class="pic"><div class="tint"><img src="img/members/drums-kurtis.jpg" alt="Kurtis Fotheringham on drums" width="599" height="900" loading="lazy"></div><div class="cap"><h3>Kurtis Fotheringham</h3><span>Drums</span></div></div>
-        <p class="blurb">Co-founder.</p>
-      </li>
-    </ul>
+    <h2 class="label" id="qrow-h">What people say</h2>
+    <div class="snap" role="region" tabindex="0" aria-label="Quotes, swipe for more" data-quote-row="3"></div>
+    <p class="swipe-hint" aria-hidden="true">Swipe for more &rarr;</p>
   </div>
 </section>
 
-<section class="setlist" id="songs">
+<section class="explore" aria-labelledby="explore-h">
   <div class="wrap">
-    <div class="head">
-      <p class="label">Setlist</p>
-      <h2>What we play</h2>
-      <p><span data-song-count>41</span> songs and 3+ hours of material, from Alice In Chains to Fall Out Boy. Plus one from the 80s, because Bon Jovi.</p>
+    <h2 class="label" id="explore-h">Dig in</h2>
+    <div class="tiles">
+      <a class="tile" href="shows/"><div class="tint"><img src="img/hero/full-band-live-brothers-tavern-moody.jpg" alt="" width="1600" height="1066" loading="lazy"></div><div class="t-in"><b>Shows</b><small>Where we're playing next.</small></div></a>
+      <a class="tile" href="songs/"><div class="gfx" aria-hidden="true"><span data-song-count>41</span></div><div class="t-in"><b>Songs</b><small><span data-song-count>41</span> songs. Do we play yours?</small></div></a>
+      <a class="tile" href="watch/"><div class="tint"><img src="img/video/freeplay-arcade-full-band.jpg" alt="" width="720" height="1280" loading="lazy"></div><div class="t-in"><b>Watch</b><small>Clips and photos from real nights.</small></div></a>
+      <a class="tile" href="about/"><div class="tint"><img src="img/group/band-group-photo-brick-wall.jpg" alt="" width="1600" height="1066" loading="lazy"></div><div class="t-in"><b>About</b><small>Five people, one loud band.</small></div></a>
     </div>
-    <div class="finder">
-      <h3><label for="find">Do we play it?</label></h3>
-      <input class="input" id="find" type="search" placeholder="Type a song or band, like Weezer" autocomplete="off" data-find>
-      <p class="result" data-find-result aria-live="polite"></p>
-    </div>
-    <div class="decades" data-decades></div>
-    <div class="bonus" data-bonus></div>
-    <div class="after">
-      <a class="btn btn-line" data-setlist-link href="https://open.spotify.com/playlist/03Zaf2SRnZOYW9AtCvN4lC" target="_blank" rel="noopener">Hear the playlist on Spotify</a>
-      <p>Don't see your song? <a class="link" href="request/">Request it.</a></p>
-    </div>
-  </div>
-</section>
-
-<section class="req" aria-labelledby="req-h">
-  <div class="wrap">
-    <div class="reqcard">
-      <div>
-        <p class="label">Requests</p>
-        <h2 id="req-h">What should we learn next?</h2>
-        <p>Tell us the song. If we already play it, we'll tell you. If not, it goes on the list and we vote on it at practice.</p>
-      </div>
-      <a class="btn btn-hot" href="request/">Request a song</a>
-    </div>
-  </div>
-</section>
-
-<section class="photos" id="photos">
-  <div class="wrap">
-    <div class="head"><p class="label">Photos</p><h2>On stage</h2></div>
-    <!-- To swap a photo: drop the file in img/gallery/ and change its src (and width/height) below. -->
-    <div class="grid">
-      <div class="tint tall"><img src="img/gallery/live-02.jpg" alt="Jeff singing backup while playing guitar" width="1200" height="1600" loading="lazy"></div>
-      <div class="gtile"><img src="img/logo.svg" alt="Six to Midnight logo" width="150" height="131" loading="lazy"></div>
-      <div class="tint"><img src="img/gallery/live-06.jpg" alt="Sam on bass, looking up at the lights" width="1066" height="1600" loading="lazy"></div>
-      <div class="tint tall lift"><img src="img/gallery/live-08.jpg" alt="Allan Paoletti playing a Les Paul under red lights" width="1066" height="1600" loading="lazy"></div>
-      <div class="gtile"><p class="song">"Teenage Dirtbag" is on the list. You're welcome.</p></div>
-      <div class="tint wide"><img src="img/gallery/live-05.jpg" alt="Jeff and Allan playing guitar side by side" width="1600" height="1066" loading="lazy"></div>
-      <div class="tint"><img src="img/gallery/live-04.jpg" alt="Jeff and Brandon on stage together" width="1066" height="1600" loading="lazy"></div>
-      <div class="gtile"><p class="shout">Turn it up.</p></div>
-      <div class="gtile"><p class="boxed tile-box">90s &amp;<br>2000s rock</p></div>
-    </div>
-    <p class="caption">Brother's Tavern, Milford. More after the next show.</p>
-  </div>
-</section>
-
-<section class="shows" id="shows" data-dock-hide>
-  <div class="wrap inner">
-    <div class="head"><p class="label">Shows</p><h2>Upcoming</h2></div>
-    <div data-gigs aria-live="polite"></div>
-  </div>
-</section>
-
-<section class="quotes" aria-labelledby="quotes-h">
-  <div class="wrap">
-    <div class="head"><p class="label">What people say</p><h2 id="quotes-h">Don't take our word for it</h2></div>
-    <div data-quotes="3"></div>
-    <p class="more"><a class="link" href="book/#quotes">More on the booking page</a></p>
-  </div>
-</section>
-
-<section class="news" id="newsletter">
-  <div class="wrap">
-    <p class="label">Newsletter</p>
-    <h2>Never miss a show</h2>
-    <p class="intro">One email when we book a gig. That's it. No spam, we're too busy rehearsing.</p>
-    <form data-newsletter novalidate>
-      <label for="nl" class="sr-only">Email</label>
-      <input class="input" id="nl" type="email" name="EMAIL" placeholder="you@email.com" autocomplete="email" required>
-      <button class="btn btn-hot" type="submit">Sign me up</button>
-    </form>
-    <p class="note-line" data-newsletter-heads hidden>Heads up: signups aren't automatic yet. This opens an email to the band with your address filled in. Just hit send.</p>
-    <p class="form-msg" data-newsletter-msg role="status" hidden></p>
-    <div class="follow">
-      <a class="btn btn-line" data-social="instagram" href="https://www.instagram.com/six.to.midnight/" target="_blank" rel="noopener">Follow on Instagram</a>
-      <a class="btn btn-line" data-social="facebook" href="https://www.facebook.com/sixtomidnight6200" target="_blank" rel="noopener">Follow on Facebook</a>
-    </div>
-  </div>
-</section>
-
-<section class="bookcta" aria-labelledby="book-h">
-  <div class="tint"><img src="img/gallery/live-03.jpg" alt="" width="1200" height="1600" loading="lazy"></div>
-  <div class="wrap">
-    <p class="ruled">For venues &amp; parties</p>
-    <h2 id="book-h">Got a stage? <span>We'll fill it with songs your crowd knows.</span></h2>
-    <p>Setlist, real reviews, setup details and a quick inquiry form. All on one page.</p>
-    <a class="btn btn-hot" href="book/">Booking info</a>
   </div>
 </section>
 </main>
@@ -225,6 +114,7 @@
   <div class="wrap">
     <img class="logo" src="img/logo.svg" alt="Six to Midnight" width="70" height="61" loading="lazy">
     <p class="ruled">Six to Midnight</p>
+    <nav aria-label="Site"><ul class="sitemap"><li><a href="./" aria-current="page">Home</a></li><li><a href="shows/">Shows</a></li><li><a href="songs/">Songs</a></li><li><a href="watch/">Watch</a></li><li><a href="about/">About</a></li><li><a href="book/">Book us</a></li></ul></nav>
     <div class="soc">
       <a data-social="instagram" href="https://www.instagram.com/six.to.midnight/" target="_blank" rel="noopener">Instagram</a>
       <a data-social="facebook" href="https://www.facebook.com/sixtomidnight6200" target="_blank" rel="noopener">Facebook</a>
@@ -232,14 +122,12 @@
       <a class="mail" data-email data-email-text href="mailto:sixtomidnight6200@gmail.com">sixtomidnight6200@gmail.com</a>
     </div>
     <p>Six to Midnight · 90s &amp; 2000s rock · Central Mass</p>
-    <p class="small"><a href="book/">Book us</a><a href="request/">Request a song</a><a href="#main">Back to top</a></p>
+    <p class="small"><a href="request/">Request a song</a><a href="shows/#newsletter">Get show emails</a></p>
     <p>&copy; <span data-year>2026</span> Six to Midnight</p>
   </div>
 </footer>
 
-<div class="dock" data-dock role="region" aria-label="Next show" hidden></div>
-
-<script src="js/config.js?v=3b"></script>
-<script src="js/main.js?v=3b"></script>
+<script src="js/config.js?v=9"></script>
+<script src="js/main.js?v=9"></script>
 </body>
 </html>

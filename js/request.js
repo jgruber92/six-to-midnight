@@ -142,7 +142,9 @@
     $("doneSong").textContent = d.song + (d.artist ? " · " + d.artist : "");
     // With no inbox connected nothing is saved yet, so the title asks for the send tap.
     $("doneTitle").textContent = ENDPOINT ? title : "One more tap: hit send";
-    $("doneMsg").textContent = ENDPOINT ? msg : (/[!.?]$/.test(title) ? title : title + ".") + " " + msg;
+    // No endpoint: nothing is saved until they hit send, so don't say "added" yet.
+    $("doneMsg").textContent = ENDPOINT ? msg : hit ? title + " " + msg
+      : "Hit send and it goes on the list. If we already play it, yell for it at the show.";
     $("doneAdd").textContent = add; $("doneAdd").hidden = !add;
     $("seeSet").hidden = !!hit;
     var mail = $("doneMail"), mnote = $("doneMailNote");

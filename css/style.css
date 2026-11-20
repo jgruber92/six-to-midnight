@@ -20,7 +20,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
 html{scroll-behavior:smooth;scroll-padding-top:16px}
-body{background:var(--night);color:var(--white);font-family:var(--body);font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{background:var(--night);color:var(--white);font-family:var(--body);font-size:16px;line-height:1.6;overflow-x:clip;-webkit-font-smoothing:antialiased}
 img,video,iframe{display:block;max-width:100%}
 a{color:inherit}
 .wrap{width:min(1180px,100% - 32px);margin-inline:auto}
@@ -144,7 +144,6 @@ footer .small a{min-height:44px;display:inline-flex;align-items:center;color:var
 .member .cap{position:absolute;left:0;right:0;bottom:0;padding:40px 12px 12px;background:linear-gradient(0deg,#0A0710f2,transparent);z-index:2}
 .member h3{font-size:clamp(1.7rem,6vw,2.3rem)}
 .member .cap span{font-family:var(--label);letter-spacing:.28em;text-transform:uppercase;font-size:.72rem;color:var(--pink)}
-.member .blurb{color:var(--muted);font-size:.9rem;margin-top:8px;line-height:1.45}
 .member:last-child{grid-column:span 2}
 .member:last-child .tint{aspect-ratio:16/9}
 @media(min-width:760px){.lineup{grid-template-columns:repeat(5,1fr)}.member:last-child{grid-column:auto}.member:last-child .tint{aspect-ratio:3/4}}
@@ -235,15 +234,6 @@ footer .small a{min-height:44px;display:inline-flex;align-items:center;color:var
 .bookcta h2 span{display:block;font-size:.4em;line-height:1;margin:14px auto 0;max-width:22ch}
 .bookcta p{max-width:44ch;margin:16px auto 28px;font-size:1.1rem}
 
-/* docked next-show bar (from C · Encore), phones only */
-.dock{position:fixed;left:50%;bottom:12px;z-index:30;width:min(560px,100% - 24px);display:flex;align-items:center;gap:12px;padding:8px 8px 8px 16px;border-radius:999px;background:#130C1Df2;border:1px solid #F6F1FF33;box-shadow:0 16px 40px #000c;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transform:translate(-50%,0);transition:transform .25s,opacity .25s}
-.dock.away{transform:translate(-50%,140%);opacity:0;visibility:hidden}
-.dock .dot{width:10px;height:10px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);flex:0 0 auto}
-.dock p{flex:1;min-width:0;font-size:.85rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
-.dock p b{display:block;font-size:.95rem;color:var(--white);overflow:hidden;text-overflow:ellipsis}
-.dock .btn{min-height:44px;padding:0 16px;font-size:.75rem;flex:0 0 auto;border-radius:999px}
-body.has-dock footer{padding-bottom:110px}
-@media(min-width:900px){.dock{display:none}body.has-dock footer{padding-bottom:40px}}
 
 /* ---------- 6. /book ---------- */
 .bhero{position:relative;padding:110px 0 64px;text-align:center;isolation:isolate;overflow:hidden}
@@ -468,3 +458,239 @@ body.bw .qcard .h1like span{background:none;-webkit-text-fill-color:#000;color:#
 .video .frame .soon{display:flex;align-items:center;justify-content:center;gap:10px;margin:22px auto 0;font-family:var(--label);letter-spacing:.24em;text-transform:uppercase;font-size:.78rem;color:var(--muted)}
 .video .frame .soon i{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);animation:blink 1.2s steps(2) infinite}
 .video .frame h3{margin-top:0}
+
+/* =============================================================
+   10. v2 multi-page (2026-11-20) · direction A "Marquee Tabs"
+   From design/round-2/a-marquee-tabs.html + shared.css.
+   ============================================================= */
+section{padding:64px 0}
+html{scroll-padding-top:118px}
+@media(min-width:900px){html{scroll-padding-top:84px}}
+
+/* sticky header: logo + Book us, five tabs underneath on phones, inline on desktop */
+.hdr{position:sticky;top:0;z-index:20;background:#0A0710eb;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
+.hdr .bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;column-gap:20px}
+.hdr .home{display:inline-flex;align-items:center;min-height:56px}
+.hdr .home img{height:32px;width:auto}
+.hdr .btn{min-height:44px}
+.hdr .btn[aria-current]{box-shadow:0 0 0 2px var(--white)}
+.tabs{order:3;flex:1 0 100%;display:grid;grid-template-columns:repeat(5,1fr);margin:0 -16px;border-top:1px solid var(--line-soft)}
+.tabs a{position:relative;min-height:46px;display:flex;align-items:center;justify-content:center;padding-left:.14em;font-family:var(--label);font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;text-decoration:none;color:var(--muted)}
+.tabs a:hover,.tabs a[aria-current]{color:var(--white)}
+.tabs a[aria-current]::after{content:"";position:absolute;left:12%;right:12%;bottom:0;height:3px;background:var(--grad);box-shadow:0 0 12px #FF2A3D88}
+@media(max-width:359px){.tabs a{letter-spacing:.06em;font-size:.72rem}}
+@media(min-width:900px){
+  .tabs{order:0;flex:0 1 auto;display:flex;gap:6px;margin:0 0 0 auto;border:0}
+  .tabs a{padding:0 14px;min-height:64px;font-size:.82rem;letter-spacing:.22em}
+}
+
+/* home hero: shorter than v1, ticket peeks in on the first phone screen */
+.hero{min-height:auto;padding:34px 0 76px}
+.hero .logo{width:min(96px,26vw);margin-bottom:12px}
+.hero h1{font-size:clamp(4rem,19vw,11rem);margin:10px 0 14px}
+.hero .tag{margin:16px auto 22px}
+.hero .ctas .btn{min-width:150px}
+@media(min-width:900px){.hero{padding:70px 0 110px}}
+.ticket{margin-top:-44px}
+.ticket.flat{margin-top:0;padding-top:8px}
+.ticket .stub .d{font-size:4.6rem}
+.ticket .info{padding:20px}
+.ticket .info h2{font-size:clamp(2.4rem,9vw,3.6rem)}
+
+/* proof stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);list-style:none;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats li{padding:14px 6px;text-align:center}
+.stats li + li{border-left:1px solid var(--line)}
+.stats b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(2.2rem,10vw,3.4rem);line-height:.9;color:var(--white)}
+.stats span{display:block;font-family:var(--label);letter-spacing:.16em;text-transform:uppercase;font-size:.7rem;color:var(--pink);margin-top:4px}
+
+/* featured clip + proof, side by side even on a phone */
+.vid{position:relative;aspect-ratio:9/16;background:#000;border:1px solid #F6F1FF33;box-shadow:0 20px 60px #000a}
+.vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.feat{padding:48px 0 36px}
+.feat-grid{display:grid;grid-template-columns:42% 1fr;gap:18px;align-items:center;max-width:860px;margin:0 auto}
+.feat h2{font-size:clamp(2.1rem,9vw,4.4rem);margin:6px 0 14px}
+.feat .stats{grid-template-columns:1fr;border-bottom:0}
+.feat .stats li{text-align:left;padding:8px 0;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:10px}
+.feat .stats li + li{border-left:0}
+.feat .stats b{font-size:clamp(1.8rem,8vw,3rem)}
+.feat .stats span{margin:0}
+.feat .link{margin-top:6px}
+.clip-cap{color:var(--muted);font-size:.92rem;line-height:1.4;margin:-4px 0 10px}
+@media(min-width:760px){.feat-grid{grid-template-columns:300px 1fr;gap:48px}}
+
+/* quotes: swipe row on phones, 3 columns on desktop */
+.q{border-left:3px solid var(--red);padding:4px 0 4px 14px}
+.q blockquote{font-family:var(--display);font-size:clamp(1.7rem,7vw,2.2rem);line-height:1}
+.q figcaption{color:var(--muted);font-size:.85rem;margin-top:6px}
+.qrow{padding:28px 0 40px}
+.qrow .label{margin-bottom:14px}
+.snap{display:grid;grid-auto-flow:column;grid-auto-columns:84%;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;scrollbar-width:thin}
+.snap .q{scroll-snap-align:start;background:var(--panel);padding:18px 18px 18px 16px}
+.swipe-hint{font-family:var(--label);letter-spacing:.2em;text-transform:uppercase;font-size:.68rem;color:var(--muted);margin-top:6px}
+@media(min-width:760px){.snap{grid-auto-flow:row;grid-template-columns:repeat(3,1fr);overflow:visible}.swipe-hint{display:none}}
+
+/* page tiles on Home */
+.explore{padding:24px 0 72px}
+.explore .label{margin-bottom:14px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{position:relative;aspect-ratio:1/1;display:block;text-decoration:none;isolation:isolate;overflow:hidden;border:1px solid var(--line-soft)}
+.tile > .tint,.tile > .gfx{position:absolute;inset:0;z-index:-2}
+.tile::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,#0A0710f0 5%,#0A071033 60%)}
+.tile .t-in{position:absolute;left:12px;right:12px;bottom:10px}
+.tile b{display:block;font-family:var(--display);font-weight:400;font-size:2.3rem;line-height:.9}
+.tile small{display:block;font-size:.82rem;color:var(--muted);line-height:1.3;margin-top:2px}
+.tile:hover b{color:var(--pink)}
+.tile .tint img{object-position:50% 30%}
+.gfx{display:grid;place-items:center;background:radial-gradient(80% 90% at 80% 10%,#C21DD8aa,transparent 60%),radial-gradient(70% 80% at 10% 90%,#FF2A3Daa,transparent 60%),var(--panel-2)}
+.gfx span{font-family:var(--display);font-size:5rem;line-height:.8;margin-bottom:40px;text-shadow:0 4px 30px #0008}
+@media(min-width:900px){.tiles{grid-template-columns:repeat(4,1fr)}.tile{aspect-ratio:3/4}}
+
+/* inner page title band */
+.band{position:relative;isolation:isolate;overflow:hidden;padding:56px 0 40px;text-align:center}
+.band > .tint{position:absolute;inset:0;z-index:-2}
+.band > .tint img{object-position:50% 35%}
+.band::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#0A0710bb,#0A0710e6 70%,var(--night))}
+.band h1{font-size:clamp(3.6rem,17vw,7.5rem);line-height:.85;margin-top:12px}
+.band h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.band .lede{max-width:40ch;margin:14px auto 0;font-size:1.05rem}
+.crumbs{font-family:var(--label);letter-spacing:.24em;text-transform:uppercase;font-size:.72rem;color:var(--muted)}
+.crumbs a{color:var(--muted);text-decoration:none;display:inline-block;padding:14px 4px;margin:-14px -4px}
+.crumbs a:hover{color:var(--white)}
+.after-band{padding-top:24px}
+
+/* About body */
+.prose{max-width:62ch;margin:0 auto}
+.prose p{color:var(--muted);font-size:1.05rem;margin-top:14px}
+.prose p:first-child{color:var(--white);font-size:1.25rem;font-weight:600;margin-top:0}
+.feature-photo{aspect-ratio:3/2;margin:40px auto 0;max-width:980px}
+.feature-photo img{object-position:50% 40%}
+.feature-cap{text-align:center;color:var(--muted);font-size:.85rem;margin-top:10px}
+.what{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);list-style:none;margin:40px auto 0;max-width:880px}
+.what li{background:var(--night);padding:18px 12px;text-align:center}
+.what b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(2rem,9vw,2.8rem);line-height:.9;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.what span{display:block;font-family:var(--label);letter-spacing:.16em;text-transform:uppercase;font-size:.72rem;color:var(--muted);margin-top:6px}
+@media(min-width:760px){.what{grid-template-columns:repeat(4,1fr)}}
+.lineup{margin-top:40px}
+.lineup-head{text-align:center;margin-top:64px}
+.lineup-head h2{font-size:clamp(2.8rem,12vw,4.6rem);margin-top:8px}
+
+/* "Next up" card at the bottom of inner pages */
+.nextstep{padding:0 0 72px}
+.nextstep .card{border:2px solid var(--white);padding:28px 20px;text-align:center;background:radial-gradient(70% 100% at 50% 0%,#C21DD833,transparent 70%),var(--panel)}
+.nextstep h2{font-size:clamp(2.6rem,11vw,4.4rem);margin:8px 0 10px}
+.nextstep p:not(.label){color:var(--muted);max-width:44ch;margin:0 auto}
+.nextstep .row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:22px}
+.nextstep .row .btn{flex:1 1 200px;max-width:280px}
+
+/* Shows page */
+.upcoming .inner{max-width:720px;margin-inline:auto}
+.upcoming .head{margin-bottom:24px}
+.upcoming .head h2{font-size:clamp(2.6rem,11vw,4.4rem)}
+.upcoming .empty{color:var(--muted);text-align:center}
+.upcoming .empty + .empty{margin-top:10px}
+.upcoming .empty a{color:var(--pink);display:inline-block;padding:12px 0;margin:-12px 0}
+.news .follow-h{font-size:clamp(2.2rem,9vw,3.2rem);margin-top:48px}
+.news .follow-p{color:var(--muted);margin-top:8px}
+.news .follow{margin-top:18px}
+
+/* Songs page: setlist sits right under the title band */
+.setlist.after-band{background:var(--night)}
+.req.songs-req{background:none;padding:0 0 64px}
+
+/* Watch page */
+.watch-more{text-align:center;margin-top:28px}
+.watch-more p{color:var(--muted);margin-bottom:12px}
+.watch-more .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.reels{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
+
+/* Book page */
+.bhero{padding:48px 0 56px}
+.bhero .crumbs{margin-bottom:14px}
+.pagenav{display:flex;flex-wrap:wrap;gap:6px 8px;justify-content:center;margin-top:26px;list-style:none}
+.pagenav a{min-height:44px;display:inline-flex;align-items:center;padding:0 12px;border:1px solid #F6F1FF33;font-family:var(--label);letter-spacing:.16em;text-transform:uppercase;font-size:.72rem;text-decoration:none;background:#0A071099}
+.pagenav a:hover{border-color:var(--pink)}
+.why-more{text-align:center;margin-top:20px}
+
+/* footer additions */
+footer .sitemap{display:flex;flex-wrap:wrap;justify-content:center;gap:0 20px;margin:4px 0 8px;list-style:none}
+footer .sitemap a{min-height:44px;display:inline-flex;align-items:center;font-family:var(--label);letter-spacing:.2em;text-transform:uppercase;font-size:.78rem;text-decoration:none}
+footer .sitemap a:hover,footer .sitemap a[aria-current]{color:var(--pink)}
+.finder h2.h3like{font-size:clamp(2.2rem,8vw,3rem);margin-bottom:12px}
+h2.label{line-height:1.6}
+
+/* ---------- QA v2 round 1 ---------- */
+/* text links: keep spaces inside (inline-flex collapsed them), still 44px tall */
+.link{display:inline-block;min-height:0;padding:10px 0;line-height:24px}
+/* "Time TBA" reads as plain text on the live site */
+.tba{color:inherit}
+/* booking form: flexible-dates checkbox */
+form.inq label.check{display:flex;align-items:center;gap:12px;min-height:44px;cursor:pointer;font-size:.78rem}
+form.inq label.check input{width:22px;height:22px;min-height:0;padding:0;accent-color:var(--red);flex:0 0 auto}
+/* featured clip on phones: bigger, centered, above the copy and stats */
+@media(max-width:599px){
+  .feat-grid{grid-template-columns:1fr;gap:22px}
+  .feat .vid{width:70%;margin:0 auto}
+}
+/* About: keep faces above the name captions */
+.member .tint img{object-position:50% 20%}
+.member.sam .tint img{object-position:50% 78%}
+.member.kurtis .tint img{object-position:50% 55%}
+/* no one-word last lines */
+.hero .tag,h1,h2{text-wrap:balance}
+/* small labels up to ~13px */
+.facts li > span,.what span,.crumbs{font-size:.82rem}
+/* reserve the ticket height so anchors below it do not jump when gigs render */
+.ticket .card[data-next]{min-height:330px}
+@media(min-width:760px){.ticket .card[data-next]{min-height:200px}}
+
+/* ---------- QA v2 round 2 ---------- */
+/* Watch: clips as a swipe row on phones (second clip peeks in) */
+@media(max-width:599px){
+  .clips.tall{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:75%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;max-width:none}
+  .clips.tall > div{scroll-snap-align:start}
+}
+/* Watch: Instagram reel buttons all the same width on phones */
+.reels .btn{flex:1 1 260px;max-width:340px}
+@media(max-width:599px){.reels{flex-direction:column;align-items:center}.reels .btn{width:100%;flex:none}}
+/* Watch gallery: faces in frame */
+.photos .tint.drums img{object-position:50% 45%;filter:grayscale(1) contrast(1.05) brightness(2.1)}
+.photos .tint.sam img{object-position:50% 30%}
+.photos .tint.wide img{object-position:50% 45%}
+/* Book: two "why" cards; tighter hero on phones so the clip poster peeks in */
+@media(min-width:760px){.why.two{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:599px){
+  .bhero{padding:28px 0 28px}
+  .bhero .crumbs{margin-bottom:6px}
+  .bhero h1{margin-top:8px}
+  .bhero .lede{margin:10px auto 18px;font-size:1rem}
+  .bhero .ctas .btn{flex:1 1 140px;padding-inline:14px}
+  .bhero .facts{margin-top:22px}
+  .bhero .facts li{padding:10px 8px}
+  .bhero .pagenav{display:none}
+  #watch.feat{padding-top:28px}
+}
+/* tap widths */
+.hdr .home{min-width:44px;padding-right:6px}
+footer .sitemap a{min-width:44px;justify-content:center}
+
+/* ---------- QA v2 round 3 ---------- */
+/* Pinned header: overflow-x:clip on body (set above) doesn't create a scroll container, so position:sticky keeps
+   working in Safari/iOS. Old browsers without clip fall back to hidden. */
+@supports not (overflow:clip){body{overflow-x:hidden}}
+/* in-page jumps land below the pinned header */
+[id]{scroll-margin-top:118px}
+@media(min-width:900px){[id]{scroll-margin-top:84px}}
+html{scroll-padding-top:0}
+/* ticket: small "Add to calendar" line under the buttons */
+.ticket .cal{font-size:.85rem;color:var(--muted)}
+.ticket .cal a{color:var(--white);text-underline-offset:3px;display:inline-block;padding:12px 2px;margin:-8px 0}
+/* /book/ quotes: 2 even columns; an odd last card spans the row */
+@media(min-width:760px){.qgrid{grid-template-columns:1fr 1fr}.qgrid figure:last-child:nth-child(odd){grid-column:1 / -1}}
+@media(min-width:1000px){.qgrid{grid-template-columns:1fr 1fr;max-width:980px;margin-inline:auto}}
+/* Songs: bonus label is an h3 */
+.bonus h3.bonus-h{font-size:.78rem;line-height:1.6}
+
+/* ---------- QA v2 round 4 ---------- */
+/* desktop: shorter hero so the next-show ticket's top edge shows on the first screen (phones/tablets unchanged) */
+@media(min-width:900px){.hero{padding:40px 0 84px}.hero h1{font-size:clamp(4rem,15vh,11rem)}}

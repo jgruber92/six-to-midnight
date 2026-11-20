@@ -1,4 +1,5 @@
-// Six to Midnight · page behavior for the homepage and /book/.
+// Six to Midnight · page behavior for every main page (Home, About, Shows, Songs, Watch, Book us).
+// Each block only runs if its data- hook is on the page, so pages render only what they have.
 // Content lives in js/config.js. Nothing here needs editing for normal updates.
 (function () {
   "use strict";
@@ -36,7 +37,8 @@
   var toDate = function (s) { var p = String(s).split("-").map(Number); return p[0] && p[1] && p[2] ? new Date(p[0], p[1] - 1, p[2]) : null; };
   var longDate = function (d) { return DAY[d.getDay()] + ", " + MON[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear(); };
   var shortDate = function (d) { return MON[d.getMonth()] + " " + d.getDate(); };
-  var timeText = function (g) { return g.time ? esc(g.time) : '<span class="todo">Time TBA</span>'; };
+  // "Time TBA" placeholder: plain text on the live site (class .tba, no dashed .todo box). Fill `time` in config gigs.
+  var timeText = function (g) { return g.time ? esc(g.time) : '<span class="tba">Time TBA</span>'; };
   var niceDate = function (v) { var d = toDate(v); return d ? longDate(d) : v; };
   var mapsUrl = function (g) { return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(g.venue + " " + g.town); };
 
@@ -69,59 +71,121 @@
     });
   }
 
+  // ---------- "Add to calendar" for a gig in config ----------
+  // With a parseable time ("8pm", "8:30 PM") it's a 3-hour event; otherwise an all-day event.
+  // Two flavors: an .ics file (Apple / Outlook) and a Google Calendar link (works in Instagram/Facebook in-app browsers).
+  var pad2 = function (n) { return (n < 10 ? "0" : "") + n; };
+  var ymd = function (d) { return d.getFullYear() + pad2(d.getMonth() + 1) + pad2(d.getDate()); };
+  var stamp = function (d) { return ymd(d) + "T" + pad2(d.getHours()) + pad2(d.getMinutes()) + "00"; };
+  // Gig time text -> start/end Dates. "8pm", "8:30 PM", "9 p.m.", "8-11pm", "8 to 11pm", "8pm-12am".
+  // First number is the start; a start without am/pm takes the end's; no end time = start + 3 hours.
+  // Anything else ("TBA", blank, "8") returns null and the event is all-day.
+  function parseGigTime(g) {
+    var AP = "(?:([ap])\\.?\\s*m\\.?)?";
+    var m = new RegExp("^\\D*?(\\d{1,2})(?::(\\d{2}))?\\s*" + AP + "(?:\\s*(?:-|\\u2013|to)\\s*(\\d{1,2})(?::(\\d{2}))?\\s*" + AP + ")?", "i").exec(g.time || "");
+    if (!m) return null;
+    var sAp = m[3] || m[6];
+    if (!sAp) return null;
+    var at = function (h, min, ap) { var d = new Date(g.d); d.setHours((+h % 12) + (/p/i.test(ap) ? 12 : 0), +(min || 0), 0, 0); return d; };
+    var s = at(m[1], m[2], sAp), e;
+    if (m[4]) {
+      e = at(m[4], m[5], m[6] || m[3]);
+      if (e <= s) e.setDate(e.getDate() + 1); // runs past midnight
+    } else e = new Date(s.getTime() + 3 * 3600 * 1000);
+    return { start: s, end: e };
+  }
+  function calEvent(g) {
+    var tm = parseGigTime(g);
+    var shows = C.siteUrl ? C.siteUrl.replace(/\/?$/, "/") + "shows/" : "";
+    var ev = { title: "Six to Midnight live at " + g.venue, where: g.venue + ", " + g.town,
+      details: "90s & 2000s rock." + (tm ? "" : " Time TBA, check for updates.") + (shows ? " Shows: " + shows : "") + (IG ? " Instagram: " + IG : "") };
+    if (tm) {
+      ev.start = stamp(tm.start); ev.end = stamp(tm.end);
+    } else {
+      var e = new Date(g.d); e.setDate(e.getDate() + 1);
+      ev.allDay = true; ev.start = ymd(g.d); ev.end = ymd(e); // end date is exclusive in both formats
+    }
+    return ev;
+  }
+  // RFC 5545: lines longer than 75 octets fold onto continuation lines that start with a space.
+  function foldIcs(line) {
+    var out = [], cur = "", n = 0;
+    Array.from(line).forEach(function (ch) {
+      var b = unescape(encodeURIComponent(ch)).length; // UTF-8 byte length
+      if (n + b > 75) { out.push(cur); cur = " "; n = 1; }
+      cur += ch; n += b;
+    });
+    out.push(cur);
+    return out.join("\r\n");
+  }
+  function icsHref(g) {
+    var ev = calEvent(g);
+    var icsEsc = function (s) { return String(s || "").replace(/\\/g, "\\\\").replace(/([,;])/g, "\\$1").replace(/\n/g, "\\n"); };
+    var now = new Date(), utc = now.getUTCFullYear() + pad2(now.getUTCMonth() + 1) + pad2(now.getUTCDate()) + "T" + pad2(now.getUTCHours()) + pad2(now.getUTCMinutes()) + "00Z";
+    var when = ev.allDay ? ["DTSTART;VALUE=DATE:" + ev.start, "DTEND;VALUE=DATE:" + ev.end] : ["DTSTART:" + ev.start, "DTEND:" + ev.end];
+    var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Six to Midnight//Site//EN", "BEGIN:VEVENT",
+      "UID:stm-" + ymd(g.d) + "-" + norm(g.venue).replace(/ /g, "-") + "@six-to-midnight", "DTSTAMP:" + utc].concat(when).concat([
+      "SUMMARY:" + icsEsc(ev.title), "LOCATION:" + icsEsc(ev.where), "DESCRIPTION:" + icsEsc(ev.details),
+      "END:VEVENT", "END:VCALENDAR"]);
+    return "data:text/calendar;charset=utf-8," + encodeURIComponent(lines.map(foldIcs).join("\r\n") + "\r\n");
+  }
+  function googleCalHref(g) {
+    var ev = calEvent(g);
+    return "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      "&text=" + encodeURIComponent(ev.title) + "&dates=" + ev.start + "/" + ev.end +
+      (ev.allDay ? "" : "&ctz=" + encodeURIComponent(C.timeZone || "America/New_York")) +
+      "&location=" + encodeURIComponent(ev.where) + "&details=" + encodeURIComponent(ev.details);
+  }
+
   function renderGigs(gigs) {
     var next = gigs[0];
 
-    // ticket card under the hero
+    // next-show ticket. data-next="home": Get show emails. Otherwise (Shows page): details link, or Instagram.
+    // Both get Add to calendar (.ics built here from config) and Directions.
     var t = $("[data-next]");
     if (t) {
+      var home = t.dataset.next === "home";
       if (next) {
+        var first = (home
+          ? '<a class="btn btn-hot btn-sm" href="' + ROOT + 'shows/#newsletter">Get show emails</a>'
+          : '<a class="btn btn-hot btn-sm" href="' + esc(next.link || IG) + '" target="_blank" rel="noopener">' + (next.link ? "Get the details" : "Follow for updates") + "</a>");
+        var cal = '<p class="cal">Add to calendar: <a href="' + icsHref(next) + '" download="six-to-midnight-' + esc(next.date) + '.ics">Apple / Outlook</a> · ' +
+          '<a href="' + esc(googleCalHref(next)) + '" target="_blank" rel="noopener">Google</a></p>';
         t.innerHTML = '<div class="stub"><div class="d">' + next.d.getDate() + '</div><div class="m">' + DAY[next.d.getDay()] + "<b>" + MON[next.d.getMonth()] + " " + next.d.getFullYear() + "</b></div></div>" +
           '<div class="info"><p class="label">Next show</p><h2>' + esc(next.venue) + "</h2><p>" + longDate(next.d) + " · " + esc(next.town) + " · " + timeText(next) + "</p>" +
-          '<div class="row"><a class="btn btn-hot" href="' + esc(next.link || FB) + '" target="_blank" rel="noopener">' + (next.link ? "Get the details" : "Follow for updates") + "</a>" +
-          '<a class="btn btn-line" href="' + mapsUrl(next) + '" target="_blank" rel="noopener">Get directions</a></div></div>';
-      } else {
+          '<div class="row">' + first + '<a class="btn btn-line btn-sm" href="' + mapsUrl(next) + '" target="_blank" rel="noopener">Directions</a></div>' + cal + "</div>";
+      } else if (home) {
         t.closest(".ticket").classList.add("empty");
-        t.innerHTML = '<div class="info"><p class="label">Next show</p><p>No shows on the calendar right now. Follow us and you\'ll hear first.</p>' +
-          '<div class="row"><a class="btn btn-hot" href="' + esc(IG) + '" target="_blank" rel="noopener">Follow on Instagram</a></div></div>';
+        t.innerHTML = '<div class="info"><p class="label">Next show</p><p>Nothing on the calendar yet. Follow along and you\'ll hear first.</p>' +
+          '<div class="row"><a class="btn btn-hot btn-sm" href="' + esc(IG) + '" target="_blank" rel="noopener">Follow on Instagram</a></div></div>';
+      } else {
+        t.closest(".ticket").hidden = true; // Shows page: the list below says it instead
       }
     }
 
-    // upcoming list
+    // upcoming list. data-gigs="rest" skips the first gig (it's the featured ticket); the whole
+    // "Coming up" block hides when nothing else is booked.
     var list = $("[data-gigs]");
     if (list) {
-      list.innerHTML = gigs.length
-        ? '<ul class="gigs">' + gigs.map(function (g) {
+      var rest = list.dataset.gigs === "rest" ? gigs.slice(1) : gigs;
+      list.innerHTML = rest.length
+        ? '<ul class="gigs">' + rest.map(function (g) {
             return '<li class="gig"><div class="dt">' + g.d.getDate() + "<small>" + MON[g.d.getMonth()] + "</small></div>" +
               "<div><h3>" + esc(g.venue) + "</h3><p>" + longDate(g.d) + " · " + esc(g.town) + " · " + timeText(g) + "</p></div>" +
               (g.link ? '<a class="btn btn-line btn-sm" href="' + esc(g.link) + '" target="_blank" rel="noopener">Details</a>' : "") + "</li>";
           }).join("") + "</ul>"
-        : '<p class="empty">Nothing booked right now. We\'re working on it. Want us at your place? <a href="' + ROOT + 'book/">Book the band.</a></p>';
+        : gigs.length ? ""
+        : '<p class="empty">Nothing on the calendar right now. We\'re working on it. Sign up below and you\'ll hear first.</p>' +
+          '<p class="empty">Want us at your place? <a href="' + ROOT + 'book/">Book us.</a></p>';
+      $$("[data-gigs-head]").forEach(function (h) { h.hidden = !rest.length; });
+      var box = list.closest("[data-gigs-section]");
+      if (box) box.hidden = !rest.length && !!gigs.length;
     }
 
-    // docked bar (phones)
-    var dock = $("[data-dock]");
-    if (dock && next) {
-      dock.innerHTML = '<span class="dot" aria-hidden="true"></span><p><b>' + DAY[next.d.getDay()] + " " + shortDate(next.d) + " · " + esc(next.venue) + "</b>" + esc(next.town) + '</p><a class="btn btn-hot" href="#next">Details</a>';
-      dock.hidden = false;
-      document.body.classList.add("has-dock");
-      // Tuck it away while the hero/ticket or the shows list is on screen, so it never covers them.
-      var hide = $$("[data-dock-hide]");
-      if ("IntersectionObserver" in window && hide.length) {
-        var seen = new Set();
-        var io = new IntersectionObserver(function (es) {
-          es.forEach(function (e) { if (e.isIntersecting) seen.add(e.target); else seen.delete(e.target); });
-          dock.classList.toggle("away", seen.size > 0);
-        });
-        hide.forEach(function (el) { io.observe(el); });
-      }
-    }
-
-    $$("[data-hero-next]").forEach(function (el) { if (next) el.textContent = "Next show: " + shortDate(next.d); });
     // lines that mention the next show
     $$("[data-see-live]").forEach(function (el) {
       if (!next) return;
-      el.innerHTML = '<a href="' + ROOT + '#next">See us live: ' + DAY[next.d.getDay()] + ", " + shortDate(next.d) + ", " + esc(next.venue) + ", " + esc(String(next.town).replace(/, [A-Z]{2}$/, "")) + "</a>";
+      el.innerHTML = '<a href="' + ROOT + 'shows/">See us live: ' + DAY[next.d.getDay()] + ", " + shortDate(next.d) + ", " + esc(next.venue) + ", " + esc(String(next.town).replace(/, [A-Z]{2}$/, "")) + "</a>";
       el.hidden = false;
     });
   }
@@ -140,7 +204,7 @@
       var list = groups[k];
       var row = function (x) { return '<li data-s="' + esc((x[0] + " " + x[1]).toLowerCase()) + '" data-t="' + esc(x[0]) + '" data-a="' + esc(x[1]) + '"><b>' + esc(x[0]) + "</b><span>" + esc(x[1]) + "</span></li>"; };
       if (list.length < 4 && bonus) { // the one-off 80s bonus gets its own box
-        bonus.innerHTML = '<span class="label">' + esc(k) + "</span>" + list.map(function (x) { return '<b data-s="' + esc((x[0] + " " + x[1]).toLowerCase()) + '" data-t="' + esc(x[0]) + '" data-a="' + esc(x[1]) + '">' + esc(x[0]) + '</b><span class="muted">' + esc(x[1]) + "</span>"; }).join("");
+        bonus.innerHTML = '<h3 class="label bonus-h">' + esc(k) + "</h3>" + list.map(function (x) { return '<b data-s="' + esc((x[0] + " " + x[1]).toLowerCase()) + '" data-t="' + esc(x[0]) + '" data-a="' + esc(x[1]) + '">' + esc(x[0]) + '</b><span class="muted">' + esc(x[1]) + "</span>"; }).join("");
         return;
       }
       var big = (k.match(/(\d{2})(\d{2})?s/) || [])[0] || k; // "The 90s" -> "90s", "The 2000s" -> "2000s"
@@ -195,6 +259,36 @@
     });
   }
 
+  // ---------- quote swipe row (Home): data-quote-row="3" ----------
+  function renderQuoteRow() {
+    var Q = C.quotes || [];
+    $$("[data-quote-row]").forEach(function (el) {
+      var list = Q.slice(0, +el.dataset.quoteRow || 3);
+      if (!list.length) { el.closest("section").hidden = true; return; }
+      el.innerHTML = list.map(function (q) {
+        return '<figure class="q"><blockquote>"' + esc(q.text) + '"</blockquote><figcaption>' + esc(q.who) + (q.where ? ", " + esc(q.where) : "") + "</figcaption></figure>";
+      }).join("");
+      // Keyboard users can scroll it only while it's a swipe row; on desktop it's a static grid, so no tab stop.
+      var tabStop = function () { if (el.scrollWidth > el.clientWidth + 2) el.setAttribute("tabindex", "0"); else el.removeAttribute("tabindex"); };
+      tabStop(); window.addEventListener("resize", tabStop);
+    });
+  }
+
+  // ---------- one featured clip: data-clip="0" (index in config clips) + caption in data-clip-title="0" ----------
+  function renderFeatureClip() {
+    var clips = C.clips || [];
+    $$("[data-clip]").forEach(function (box) {
+      var m = clips[+box.dataset.clip || 0];
+      if (!m) { var f = box.closest("section"); if (f) f.hidden = true; return; }
+      box.innerHTML = '<video controls playsinline preload="none"' + (m.poster ? ' poster="' + esc(asset(m.poster)) + '"' : "") +
+        ' aria-label="' + esc(m.label || m.title || "Six to Midnight live clip") + '"><source src="' + esc(asset(m.src)) + '" type="video/mp4"></video>';
+    });
+    $$("[data-clip-title]").forEach(function (el) {
+      var m = clips[+el.dataset.clipTitle || 0];
+      if (m && m.title) el.textContent = m.title; else el.hidden = true;
+    });
+  }
+
   // ---------- video ----------
   function renderVideos() {
     var clips = (C.clips || []).map(function (c) { return { mp4: c }; })
@@ -208,10 +302,10 @@
           return '<div><div class="clip"><iframe src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(c.yt) + '" title="Six to Midnight live clip" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>';
         }
         var m = c.mp4;
-        return '<div><div class="clip' + (m.tall ? " tall" : "") + '"><video controls playsinline preload="none"' + (m.poster ? ' poster="' + esc(asset(m.poster)) + '"' : "") + (m.title ? ' aria-label="' + esc(m.title) + '"' : "") + '><source src="' + esc(asset(m.src)) + '" type="video/mp4"></video></div>' +
+        return '<div><div class="clip' + (m.tall ? " tall" : "") + '"><video controls playsinline preload="none"' + (m.poster ? ' poster="' + esc(asset(m.poster)) + '"' : "") + ((m.label || m.title) ? ' aria-label="' + esc(m.label || m.title) + '"' : "") + '><source src="' + esc(asset(m.src)) + '" type="video/mp4"></video></div>' +
           (m.title ? '<p class="clip-title">' + esc(m.title) + "</p>" : "") + "</div>";
-      }).join("") + "</div>" +
-        '<p class="clip-more"><a class="btn btn-line" data-social="instagram" href="' + esc((C.socials && C.socials.instagram) || "https://www.instagram.com/six.to.midnight/") + '" target="_blank" rel="noopener">More clips on Instagram</a></p>';
+      }).join("") + "</div>" + (box.dataset.videos === "nomore" ? "" :
+        '<p class="clip-more"><a class="btn btn-line" data-social="instagram" href="' + esc((C.socials && C.socials.instagram) || "https://www.instagram.com/six.to.midnight/") + '" target="_blank" rel="noopener">More clips on Instagram</a></p>');
     });
   }
 
@@ -223,7 +317,9 @@
       var extra = box.dataset.reels === "clip"
         ? '<a class="btn btn-line" href="mailto:' + esc(EMAIL) + "?subject=" + encodeURIComponent("Clip request") + '">Ask for a clip</a>' : "";
       box.innerHTML = reels.map(function (r, i) {
-        return '<a class="btn ' + (i ? "btn-line" : "btn-hot") + '" href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.label || "Watch on Instagram") + "</a>";
+        // data-reels="line": every reel is an outline button (the page has its own single primary button)
+        var hot = !i && box.dataset.reels !== "line";
+        return '<a class="btn ' + (hot ? "btn-hot" : "btn-line") + '" href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.label || "Watch on Instagram") + "</a>";
       }).join("") + extra;
     });
   }
@@ -232,8 +328,13 @@
   function renderRider() {
     var body = $("[data-rider]");
     if (!body) return;
-    body.innerHTML = (C.rider || []).filter(function (r) { return r && r.value; })
-      .map(function (r) { return '<tr><th scope="row">' + esc(r.label) + "</th><td>" + esc(r.value) + "</td></tr>"; }).join("");
+    var rows = (C.rider || []).filter(function (r) { return r && r.value; });
+    body.innerHTML = rows.map(function (r) { return '<tr><th scope="row">' + esc(r.label) + "</th><td>" + esc(r.value) + "</td></tr>"; }).join("");
+    // Only the PA row so far (and that's already in the quick facts): hide the section and its page-nav link.
+    // It shows on its own once more rider rows in config have a value.
+    var few = rows.length < 2;
+    var sec = body.closest("section"); if (sec) sec.hidden = few;
+    $$("[data-setup-link]").forEach(function (el) { el.hidden = few; });
   }
 
   // ---------- absolute share links once siteUrl is set ----------
@@ -275,6 +376,7 @@
     if (heads) heads.hidden = !!C.newsletterAction;
     form.addEventListener("submit", function (e) {
       var v = input.value.trim();
+      if (!v) { e.preventDefault(); say("Add your email first.", true); input.focus(); return; }
       if (!EMAIL_RE.test(v)) { e.preventDefault(); say("That email doesn't look right. Mind checking it?", true); input.focus(); return; }
       if (!C.newsletterAction) {
         e.preventDefault();
@@ -310,11 +412,12 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var f = form.elements;
-      if (!f.name.value.trim() || !f.email.value.trim() || !f.date.value) { say("We just need your name, email and a date.", true); (f.name.value.trim() ? (f.email.value.trim() ? f.date : f.email) : f.name).focus(); return; }
+      if (!f.name.value.trim() || !f.email.value.trim()) { say("We just need your name and email.", true); (f.name.value.trim() ? f.email : f.name).focus(); return; }
+      var when = f.date.value ? niceDate(f.date.value) : (f.flexible && f.flexible.checked ? "flexible dates" : "date TBD");
       if (!EMAIL_RE.test(f.email.value.trim())) { say("That email doesn't look right. Mind checking it?", true); f.email.focus(); return; }
       var data = new FormData(form);
       if (C.bookingFormAction) {
-        data.append("_subject", "Booking inquiry: " + niceDate(f.date.value));
+        data.append("_subject", "Booking inquiry: " + when);
         btn.disabled = true; say("Sending...");
         fetch(C.bookingFormAction, { method: "POST", body: data, headers: { Accept: "application/json" } })
           .then(function (r) {
@@ -326,13 +429,27 @@
         return;
       }
       // No endpoint yet: open a prefilled email to the band inbox.
-      var labels = { name: "Name", email: "Email", venue: "Venue or event", town: "Town", date: "Date", type: "Type of gig", message: "Anything else" };
+      var labels = { name: "Name", email: "Email", venue: "Venue or event", town: "Town", date: "Date", flexible: "Dates are flexible", type: "Type of gig", message: "Anything else" };
       var body = Object.keys(labels).map(function (k) { return labels[k] + ": " + (data.get(k) || ""); }).join("\n");
       say("Opening your email app with your details filled in. Just hit send.<br>Nothing opened? Email us at " + mailLink + ".");
-      location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Booking inquiry: " + niceDate(f.date.value)) + "&body=" + encodeURIComponent(body);
+      location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Booking inquiry: " + when) + "&body=" + encodeURIComponent(body);
     });
   }
 
-  renderShareMeta(); renderLinks(); renderReels(); renderRider(); renderSongs(); renderQuotes(); renderVideos(); wireNewsletter(); wireBooking();
-  loadGigs().then(renderGigs);
+  renderShareMeta(); renderLinks(); renderReels(); renderRider(); renderSongs(); renderQuotes(); renderQuoteRow(); renderFeatureClip(); renderVideos(); wireNewsletter(); wireBooking();
+  // The next-show ticket grows once gigs render (and fonts/images load after that), which can push an
+  // anchor target like shows/#newsletter down the page. Jump to it again once things settle, unless the
+  // visitor has already scrolled on their own. behavior "instant" (not "auto": with html{scroll-behavior:smooth}
+  // "auto" animates), so a deep link like book/#contact jumps straight there and reduced motion is respected.
+  var userScrolled = false;
+  ["wheel", "touchmove", "keydown"].forEach(function (ev) { window.addEventListener(ev, function () { userScrolled = true; }, { once: true, passive: true }); });
+  var rejump = function () {
+    var id = location.hash.slice(1), el = id && document.getElementById(id);
+    if (el && !userScrolled) el.scrollIntoView({ behavior: "instant", block: "start" });
+  };
+  loadGigs().then(renderGigs).then(rejump);
+  if (location.hash) {
+    window.addEventListener("load", rejump);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(rejump);
+  }
 })();

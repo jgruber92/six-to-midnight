@@ -21,24 +21,23 @@ window.STM = {
   gigsCsvUrl: "",
 
   // Used until the Sheet link above is filled in.
+  // time: shown as written. For "Add to calendar" these formats are understood:
+  //   "8pm", "8:30 PM", "9 p.m.", "8-11pm", "8 to 11pm", "8pm-12am" (no end time = 3 hours).
+  //   Blank or anything else ("TBA") = all-day event and "Time TBA" on the site.
   gigs: [
     { date: "2027-02-20", venue: "Central Tavern", town: "Milford, MA", time: "", link: "" },
   ],
 
-  // Kept for reference only. Jeff 2026-11-19: do NOT show a venue list or count on the site.
-  pastVenues: [
-    "Pinz · Milford",
-    "Brother's Tavern · Milford",
-    "Valley Pub · Whitinsville",
-    "Free Play Arcade · Worcester",
-  ],
 
   // Testimonials: real comments from the band's Facebook/Instagram (pulled 2026-11-19).
   // Light cleanup only (typos, profanity). First name + last initial. Family members left out.
+  // RULE: only quotes posted publicly (social media, public reviews) or used with the person's permission.
+  // Never quote private emails or DMs without permission.
   quotes: [
-    { text: "Fantastic, tight band. Singer's got some unbelievable chops!", who: "Jorge C.", where: "on Facebook" },
+    // Order matters: the first 3 show on Home, the first one leads on /book/. Whole-band praise leads.
     { text: "You guys kicked ass last night!", who: "Karen J.", where: "after Valley Pub" },
     { text: "Show was amazing.", who: "Damien L.", where: "after Pinz, Milford" },
+    { text: "Fantastic, tight band. Singer's got some unbelievable chops!", who: "Jorge C.", where: "on Facebook" },
     { text: "I have goosebumps. Sooo good, you guys!", who: "Karina R.", where: "on our Creep cover" },
     { text: "Guitar on point! Great cover!", who: "Lisa N.", where: "on our Creep cover" },
     { text: "This song is SUCH a banger.", who: "@literary_nat", where: "on Instagram" },
@@ -134,10 +133,11 @@ window.STM = {
   //    { src: "media/creep-brothers-tavern.mp4", poster: "img/hero/full-band-live-brothers-tavern-moody.jpg", title: "Creep, Brother's Tavern" }
   //    Add tall: true for vertical phone video (shown as phone-shaped players, two across).
   clips: [
-    { src: "media/freeplay-arcade-full-band.mp4", poster: "img/video/freeplay-arcade-full-band.jpg", title: "Live at Freeplay Arcade, Worcester", tall: true },
-    { src: "media/freeplay-arcade-brandon.mp4", poster: "img/video/freeplay-arcade-brandon.jpg", title: "Brandon up front at Freeplay", tall: true },
+    // title = caption shown under the clip; label = what screen readers hear.
+    { src: "media/freeplay-arcade-full-band.mp4", poster: "img/video/freeplay-arcade-full-band.jpg", title: "Live at Free Play Arcade. Full band, full volume.", label: "Six to Midnight live at Free Play Arcade, full band", tall: true },
+    { src: "media/freeplay-arcade-brandon.mp4", poster: "img/video/freeplay-arcade-brandon.jpg", title: "Up close at Free Play Arcade.", label: "Brandon Ekvall singing live at Free Play Arcade", tall: true },
   ],
-  // Instagram reels shown as buttons in the Watch panels until real clips are added above.
+  // Instagram reels, shown as buttons on the Watch page.
   reels: [
     { label: "Watch our Creep cover", url: "https://www.instagram.com/reel/DS-GY8YDJ-e/" },
     { label: "Watch: I Believe In A Thing Called Love", url: "https://www.instagram.com/reel/DSm3OgvjSZK/" },
