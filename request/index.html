@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Request a Song | Six to Midnight</title>
+<meta name="description" content="Tell Six to Midnight what to play. Request a song at the show, or suggest one for the band to learn next. 90s and 2000s rock, Central Mass.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Six to Midnight">
+<meta property="og:title" content="Request a song from Six to Midnight">
+<meta property="og:description" content="At the show or at home, tell us what to play. If we know it, yell for it. If we don't, we'll vote on it at practice.">
+<meta property="og:image" content="https://jgruber92.github.io/six-to-midnight/img/og.jpg">
+<meta property="og:url" content="https://jgruber92.github.io/six-to-midnight/request/">
+<link rel="canonical" href="https://jgruber92.github.io/six-to-midnight/request/">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Six to Midnight on stage at Brother's Tavern in Milford">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0A0710">
+<link rel="icon" href="../favicon.ico" sizes="32x32">
+<link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="request" data-root="../">
+<div class="rbg" aria-hidden="true"><img src="../img/hero/full-band-live-brothers-tavern-moody.jpg" alt="" width="1600" height="1066"></div>
+<div class="rwrap">
+  <header class="rtop"><a href="../"><img src="../img/logo.svg" alt="" width="39" height="34"> Six to Midnight</a></header>
+  <main>
+    <p class="ruled">Song requests</p>
+    <h1>What do you <span>want to hear?</span></h1>
+    <p class="lede">At the show? Tell us what you want and we'll see what we can do. At home? Suggest one for us to learn.</p>
+
+    <form id="req" novalidate>
+      <div class="field">
+        <label class="field-label" for="song">Song</label>
+        <input class="input" id="song" name="song" type="text" placeholder="Start typing, e.g. Teenage Dirtbag" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="suggest" aria-expanded="false" aria-describedby="err inset" required>
+        <ul id="suggest" role="listbox" aria-label="Songs we play" hidden></ul>
+      </div>
+      <p class="inset-hint" id="inset" hidden>We play this one!</p>
+      <p class="err" id="err" role="alert" hidden>Give us a song title first.</p>
+      <div class="pair">
+        <label class="field-label">Artist<input class="input" id="artist" name="artist" type="text" placeholder="e.g. Wheatus"></label>
+        <label class="field-label">Your name (optional)<input class="input" id="name" name="name" type="text" autocomplete="given-name" placeholder="So we can shout you out"></label>
+      </div>
+      <label class="switch"><span><b>I'm at a show right now</b><small id="showhelp" hidden>We'll check requests after the set.</small></span><input id="atshow" name="at_show" type="checkbox" value="yes" aria-describedby="showhelp"><span class="t" aria-hidden="true"></span></label>
+      <details><summary>+ Add a note</summary><label class="sr-only" for="note">Anything else?</label><textarea class="input" id="note" name="note" rows="2" placeholder="Birthday? Dedication? Bad idea? Tell us."></textarea></details>
+      <button class="go" type="submit">Send my request</button>
+      <p class="note" id="nomail" hidden>Heads up: this opens an email to the band with your request filled in. Just hit send.</p>
+      <p class="err" id="fail" role="alert" hidden></p>
+    </form>
+
+    <div id="done" hidden tabindex="-1" aria-live="polite">
+      <div class="stub"><p id="doneSong"></p><h2 id="doneTitle"></h2></div>
+      <div class="body">
+        <p class="msg" id="doneMsg"></p>
+        <p class="note" id="doneAdd" hidden></p>
+        <p class="note" id="doneMailNote" hidden></p>
+        <a class="btn btn-hot" id="doneMail" hidden>Send as email</a>
+        <button class="btn btn-line" id="again" type="button">Request another</button>
+        <a class="btn btn-line" id="seeSet" href="../#songs" hidden>See what we play</a>
+      </div>
+    </div>
+  </main>
+  <footer class="rfoot">
+    <p>Follow us: <a data-social="instagram" href="https://www.instagram.com/six.to.midnight/" target="_blank" rel="noopener">Instagram</a> · <a data-social="facebook" href="https://www.facebook.com/sixtomidnight6200" target="_blank" rel="noopener">Facebook</a></p>
+    <p><a href="../">Back to the site</a></p>
+  </footer>
+</div>
+<script src="../js/config.js?v=3"></script>
+<script src="../js/request.js?v=3"></script>
+</body>
+</html>
