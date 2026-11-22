@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Six to Midnight//Site//EN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:stm-20270220-brothers-tavern@six-to-midnight
+DTSTAMP:20261122T191600Z
+DTSTART:20270220T200000
+DTEND:20270220T230000
+SUMMARY:Six to Midnight live at Brother's Tavern
+LOCATION:Brother's Tavern\, Milford\, MA
+DESCRIPTION:90s and 2000s rock\, 8 to 11pm. Shows: https://sixtomidnightliv
+ e.com/shows/ Instagram: https://www.instagram.com/six.to.midnight/
+END:VEVENT
+END:VCALENDAR

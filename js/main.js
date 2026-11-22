@@ -156,7 +156,10 @@
     if (t) {
       if (next) {
         var first = '<a class="btn btn-hot btn-sm" href="' + esc(next.link || IG) + '" target="_blank" rel="noopener">' + (next.link ? "Get the details" : "Follow for updates") + "</a>";
-        var cal = '<p class="cal">Add to calendar: <a href="' + icsHref(next) + '" download="six-to-midnight-' + esc(next.date) + '.ics">Apple / Outlook</a> · ' +
+        // Gigs from config have a real hosted file (cal/, built by scripts/make_ics.js at publish); phones block data: links.
+        // Gigs from the Sheet don't, so they keep the built-in file as a fallback.
+        var icsLink = (C.gigsCsvUrl ? icsHref(next) + '" download="six-to-midnight-' + esc(next.date) + '.ics' : "/cal/" + esc(next.date) + ".ics");
+        var cal = '<p class="cal">Add to calendar: <a href="' + icsLink + '">Apple / Outlook</a> · ' +
           '<a href="' + esc(googleCalHref(next)) + '" target="_blank" rel="noopener">Google</a></p>';
         t.innerHTML = '<div class="stub"><div class="d">' + next.d.getDate() + '</div><div class="m">' + DAY[next.d.getDay()] + "<b>" + MON[next.d.getMonth()] + " " + next.d.getFullYear() + "</b></div></div>" +
           '<div class="info"><p class="label">Next show</p><h2>' + esc(next.venue) + "</h2><p>" + longDate(next.d) + " · " + esc(next.town) + " · " + timeText(next) + "</p>" +
