@@ -887,3 +887,6 @@ html{scroll-padding-top:0}
 .follow-sec .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .follow-sec .btn{flex:1 1 140px;max-width:220px}
 .proof-sec{padding-top:36px}
+
+/* photo credit under the Watch gallery */
+.caption.credit{margin-top:4px;font-size:.85rem;opacity:.8}

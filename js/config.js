@@ -29,6 +29,8 @@ window.STM = {
   //   Blank or anything else ("TBA") = all-day event and "Time TBA" on the site.
   gigs: [
     { date: "2027-02-20", venue: "Brother's Tavern", town: "Milford, MA", time: "8-11pm", link: "" },
+    { date: "2027-06-11", venue: "Freeplay Arcade", town: "Worcester, MA", time: "8-11pm", link: "" },
+    { date: "2027-08-27", venue: "Brother's Tavern", town: "Milford, MA", time: "8-11pm", link: "" },
   ],
 
 
