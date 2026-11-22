@@ -51,6 +51,9 @@ window.STM = {
 
   // Newsletter signup. Paste the form "action" URL from Mailchimp/Kit.
   // Empty = the form shows a thank-you but saves nothing.
+  // Newsletter signups go to the "Newsletter" tab of the band's forms Sheet (same script as the other forms).
+  // Export that tab as CSV to import into Klaviyo or Kit. newsletterAction is only for a hosted Mailchimp/Kit form.
+  newsletterSheetAction: "https://script.google.com/macros/s/AKfycbww5pKwOwOJVHbuJv10TVd_UrhwoIbSJ2UMYLGfNXhBuRX29kU-7ga-q9HU_J4Z2_Vz4A/exec?form=newsletter",
   newsletterAction: "",
   newsletterEmailField: "EMAIL", // Mailchimp uses EMAIL, Kit uses email_address
 

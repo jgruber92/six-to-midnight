@@ -390,11 +390,32 @@
     var input = $("input[type=email]", form), msg = $("[data-newsletter-msg]");
     var say = function (text, bad) { msg.innerHTML = text; msg.classList.toggle("err", !!bad); msg.hidden = false; };
     var heads = $("[data-newsletter-heads]");
-    if (heads) heads.hidden = !!C.newsletterAction;
+    if (heads) heads.hidden = !!(C.newsletterAction || C.newsletterSheetAction);
+    var btn = $("button[type=submit]", form);
     form.addEventListener("submit", function (e) {
       var v = input.value.trim();
       if (!v) { e.preventDefault(); say("Add your email first.", true); input.focus(); return; }
       if (!EMAIL_RE.test(v)) { e.preventDefault(); say("That email doesn't look right. Mind checking it?", true); input.focus(); return; }
+      var mailFallback = function () {
+        say('Opening your email app with your address filled in. Hit send and you\'re on the list.<br>Nothing opened? Email <a href="mailto:' + esc(EMAIL) + '">' + esc(EMAIL) + "</a>.");
+        location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Add me to the show list") + "&body=" + encodeURIComponent("Please add me to the Six to Midnight show list: " + v);
+      };
+      if (!C.newsletterAction && C.newsletterSheetAction) {
+        e.preventDefault();
+        var fd = new FormData();
+        fd.append("email", v); fd.append("source", location.pathname);
+        if (btn) { btn.disabled = true; btn.textContent = "Adding you..."; }
+        fetch(C.newsletterSheetAction, { method: "POST", body: fd })
+          .then(function (r) { return r.json(); })
+          .then(function (j) {
+            if (!j || !j.ok) throw new Error("not saved");
+            form.reset();
+            say("You're on the list. We'll email you when we book a show.");
+          })
+          .catch(mailFallback)
+          .then(function () { if (btn) { btn.disabled = false; btn.textContent = "Get show emails"; } });
+        return;
+      }
       if (!C.newsletterAction) {
         e.preventDefault();
         // No signup tool yet: hand the address to the visitor's email app so it isn't lost.
