@@ -906,3 +906,10 @@ html{scroll-padding-top:0}
 .bar-strip b{font-family:var(--display);font-weight:400;font-size:clamp(1.7rem,7vw,2.2rem);line-height:1}
 .bar-strip small{color:var(--muted);font-size:.92rem;line-height:1.4}
 .bar-strip .arr{color:var(--pink);font-family:var(--label);font-size:1.4rem}
+
+/* Photo credits for Erik LeBlanc: corner tag on single photos, a line under photo grids */
+.tint .pcred{position:absolute;right:8px;bottom:6px;z-index:2;font-family:var(--label);font-size:.68rem;letter-spacing:.08em;color:#F6F1FF;opacity:.85;text-shadow:0 1px 4px #000}
+.hero .hero-credit{position:absolute;right:12px;top:8px;margin:0;font-family:var(--label);font-size:.68rem;letter-spacing:.08em;color:#F6F1FF;opacity:.7;text-shadow:0 1px 4px #000}
+.photo-credit{margin:12px 0 0;text-align:center;color:var(--muted);font-size:.85rem;opacity:.85}
+.hero .hero-credit{top:auto;bottom:68px}
+@media(min-width:900px){.hero .hero-credit{bottom:74px;right:20px}}
