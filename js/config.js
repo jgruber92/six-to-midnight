@@ -7,6 +7,9 @@ window.STM = {
   // Leave empty until it's published. When set, pages use it for absolute og:image / og:url links.
   siteUrl: "https://sixtomidnightlive.com/",
 
+  // How the song count reads everywhere ("40+"). Leave empty to show the exact number from the list.
+  songCountLabel: "40+",
+
   email: "sixtomidnight6200@gmail.com", // band inbox (from Facebook page; confirm)
 
   socials: {

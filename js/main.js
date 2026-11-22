@@ -198,7 +198,7 @@
     var groups = C.songs || {};
     var keys = Object.keys(groups);
     var total = keys.reduce(function (n, k) { return n + groups[k].length; }, 0);
-    $$("[data-song-count]").forEach(function (el) { el.textContent = total; });
+    $$("[data-song-count]").forEach(function (el) { el.textContent = C.songCountLabel || total; });
     $$("[data-setlist-link]").forEach(function (el) { if (C.setlistUrl) el.href = C.setlistUrl; else el.hidden = true; });
     var box = $("[data-decades]"), bonus = $("[data-bonus]");
     if (!box) return;

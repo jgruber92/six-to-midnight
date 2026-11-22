@@ -12,7 +12,7 @@ if (/[?&]todo\b/.test(location.search)) document.documentElement.classList.add("
 
   // song count
   var total = Object.keys(C.songs || {}).reduce(function (n, k) { return n + C.songs[k].length; }, 0);
-  if (total) $$("[data-song-count]").forEach(function (el) { el.textContent = total; });
+  if (total) $$("[data-song-count]").forEach(function (el) { el.textContent = C.songCountLabel || total; });
 
   // email + socials
   $$("[data-email]").forEach(function (a) { a.href = "mailto:" + (C.email || ""); if (a.hasAttribute("data-email-text")) a.textContent = C.email || ""; });
