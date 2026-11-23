@@ -27,6 +27,9 @@ window.STM = {
   // time: shown as written. For "Add to calendar" these formats are understood:
   //   "8pm", "8:30 PM", "9 p.m.", "8-11pm", "8 to 11pm", "8pm-12am" (no end time = 3 hours).
   //   Blank or anything else ("TBA") = all-day event and "Time TBA" on the site.
+  // Cover charge in dollars for Google's show listings. 0 = free entry. A gig can override with cover: 10.
+  coverDefault: 0,
+
   gigs: [
     { date: "2027-02-20", venue: "Brother's Tavern", town: "Milford, MA", time: "8-11pm", link: "" },
     { date: "2027-06-11", venue: "Freeplay Arcade", town: "Worcester, MA", time: "8-11pm", link: "", venueUrl: "https://freeplaybar.com/worcester" },
