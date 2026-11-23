@@ -10,7 +10,7 @@ window.STM = {
   // How the song count reads everywhere ("40+"). Leave empty to show the exact number from the list.
   songCountLabel: "40+",
 
-  email: "sixtomidnight6200@gmail.com", // band inbox (from Facebook page; confirm)
+  email: "booking@sixtomidnightlive.com", // forwards to the band Gmail (Porkbun); Gmail replies as booking@
 
   socials: {
     instagram: "https://www.instagram.com/six.to.midnight/",
@@ -29,7 +29,7 @@ window.STM = {
   //   Blank or anything else ("TBA") = all-day event and "Time TBA" on the site.
   gigs: [
     { date: "2027-02-20", venue: "Brother's Tavern", town: "Milford, MA", time: "8-11pm", link: "" },
-    { date: "2027-06-11", venue: "Freeplay Arcade", town: "Worcester, MA", time: "8-11pm", link: "" },
+    { date: "2027-06-11", venue: "Freeplay Arcade", town: "Worcester, MA", time: "8-11pm", link: "", venueUrl: "https://freeplaybar.com/worcester" },
     { date: "2027-08-27", venue: "Brother's Tavern", town: "Milford, MA", time: "8-11pm", link: "" },
   ],
 
