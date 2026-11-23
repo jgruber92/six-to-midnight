@@ -393,7 +393,7 @@
     var input = $("input[type=email]", form), msg = $("[data-newsletter-msg]");
     var say = function (text, bad) { msg.innerHTML = text; msg.classList.toggle("err", !!bad); msg.hidden = false; };
     var heads = $("[data-newsletter-heads]");
-    if (heads) heads.hidden = !!(C.newsletterAction || C.newsletterSheetAction);
+    if (heads) heads.hidden = !!(C.newsletterAction || C.newsletterSheetAction || C.newsletterKitAction);
     var btn = $("button[type=submit]", form);
     form.addEventListener("submit", function (e) {
       var v = input.value.trim();
@@ -403,6 +403,32 @@
         say('Opening your email app with your address filled in. Hit send and you\'re on the list.<br>Nothing opened? Email <a href="mailto:' + esc(EMAIL) + '">' + esc(EMAIL) + "</a>.");
         location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Add me to the show list") + "&body=" + encodeURIComponent("Please add me to the Six to Midnight show list: " + v);
       };
+      // Kit (free plan): post straight to the Kit form, stay on our page. Kit emails a confirm link (double opt-in).
+      // If Kit can't be reached, fall back to the Sheet, then to an email.
+      if (C.newsletterKitAction) {
+        e.preventDefault();
+        var kfd = new FormData();
+        kfd.append("email_address", v);
+        if (btn) { btn.disabled = true; btn.textContent = "Adding you..."; }
+        var toSheet = function () {
+          if (!C.newsletterSheetAction) return mailFallback();
+          var sfd = new FormData(); sfd.append("email", v); sfd.append("source", location.pathname);
+          return fetch(C.newsletterSheetAction, { method: "POST", body: sfd }).then(function (r) { return r.json(); })
+            .then(function (j) { if (!j || !j.ok) throw new Error("not saved"); form.reset(); say("You're on the list. We'll email you when we book a show."); })
+            .catch(mailFallback);
+        };
+        fetch(C.newsletterKitAction, { method: "POST", body: kfd, headers: { Accept: "application/json" } })
+          .then(function (r) { return r.json(); })
+          .then(function (j) {
+            if (j && j.status === "success") { form.reset(); say("Almost done! Check your email and tap the confirm link. Then we'll let you know when we book a show."); return; }
+            var m = j && j.errors && j.errors.messages && j.errors.messages[0];
+            if (m && /email/i.test(m)) { say("That email doesn't look right. Mind checking it?", true); input.focus(); return; }
+            return toSheet();
+          })
+          .catch(toSheet)
+          .then(function () { if (btn) { btn.disabled = false; btn.textContent = "Get show emails"; } });
+        return;
+      }
       if (!C.newsletterAction && C.newsletterSheetAction) {
         e.preventDefault();
         var fd = new FormData();
