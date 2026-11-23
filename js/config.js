@@ -31,9 +31,9 @@ window.STM = {
   coverDefault: 0,
 
   gigs: [
-    { date: "2027-02-20", venue: "Brother's Tavern", town: "Milford, MA", time: "8-11pm", link: "", venueUrl: "https://www.facebook.com/profile.php?id=61571538153768" },
+    { date: "2027-02-20", venue: "Brother's Tavern", town: "Milford, MA", time: "8-11pm", link: "", venueUrl: "https://www.facebook.com/profile.php?id=61571538153768", venueSameAs: ["https://www.instagram.com/brothers.tavern"] },
     { date: "2027-06-11", venue: "Freeplay Arcade", town: "Worcester, MA", time: "8-11pm", link: "", venueUrl: "https://freeplaybar.com/worcester" },
-    { date: "2027-08-27", venue: "Brother's Tavern", town: "Milford, MA", time: "8-11pm", link: "", venueUrl: "https://www.facebook.com/profile.php?id=61571538153768" },
+    { date: "2027-08-27", venue: "Brother's Tavern", town: "Milford, MA", time: "8-11pm", link: "", venueUrl: "https://www.facebook.com/profile.php?id=61571538153768", venueSameAs: ["https://www.instagram.com/brothers.tavern"] },
   ],
 
 
