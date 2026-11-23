@@ -53,8 +53,11 @@
 <script>
 (function(){
   // This card lives at /request/qr.html, so the request page is its own folder.
-  var target=new URL("./",location.href).href;
-  var short=target.replace(/^https?:\/\//,"").replace(/^www\./,"").replace(/\/$/,"");
+  // The printed link is the request page; the QR itself opens the tracked short link (qr/table/) so scans are counted.
+  var page=new URL("./",location.href).href;
+  var siteUrl=((window.STM||{}).siteUrl||"").replace(/\/?$/,"/");
+  var target=(siteUrl.length>1?siteUrl:new URL("../",location.href).href)+"qr/table/";
+  var short=page.replace(/^https?:\/\//,"").replace(/^www\./,"").replace(/\/$/,"");
   var box=document.getElementById("qr");
   try{
     var q=window.STMQR.make(target,"M"),n=q.getModuleCount(),d="",pad=2,size=n+pad*2;
@@ -79,5 +82,6 @@
   addEventListener("afterprint",function(){document.body.classList.toggle("bw",bw.checked)});
 })();
 </script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "ac290d3c46c14f8b967647804a2efbad"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

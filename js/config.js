@@ -18,6 +18,16 @@ window.STM = {
     youtube: "", // add channel link when ready
   },
 
+  // Tracked QR codes. Each one gets a short link (sixtomidnightlive.com/qr/NAME/) that counts the scan in
+  // Cloudflare Web Analytics, then sends people on. Value = where it goes ("" = Home, "request/" = song requests).
+  // Printable QR images are built to img/qr/NAME.svg every publish (scripts/make_qr.js).
+  qrLinks: {
+    table: "request/",  // table cards: song requests
+    flyer: "",          // flyers: Home (next show is up top)
+    poster: "",         // posters at venues: Home
+    more: "",           // anything else (business cards, merch, stickers): Home
+  },
+
   // Gig dates. When the shared Google Sheet is set up:
   // File > Share > Publish to web > Sheet1 > CSV, paste the link here.
   // Sheet columns: date (YYYY-MM-DD) | venue | town | time | link
