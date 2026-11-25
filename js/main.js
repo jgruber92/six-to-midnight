@@ -44,27 +44,25 @@
   var niceDate = function (v) { var d = toDate(v); return d ? longDate(d) : v; };
   var mapsUrl = function (g) { return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(g.venue + " " + g.town); };
 
-  function parseCSV(text) {
-    var rows = [], row = [], cell = "", q = false;
-    for (var i = 0; i < text.length; i++) {
-      var ch = text[i];
-      if (q) { if (ch === '"' && text[i + 1] === '"') { cell += '"'; i++; } else if (ch === '"') q = false; else cell += ch; }
-      else if (ch === '"') q = true;
-      else if (ch === ",") { row.push(cell); cell = ""; }
-      else if (ch === "\n" || ch === "\r") { if (ch === "\r" && text[i + 1] === "\n") i++; row.push(cell); rows.push(row); row = []; cell = ""; }
-      else cell += ch;
-    }
-    if (cell || row.length) { row.push(cell); rows.push(row); }
-    var head = (rows.shift() || []).map(function (h) { return h.trim().toLowerCase(); });
-    return rows.filter(function (r) { return r.some(function (c) { return c.trim(); }); })
-      .map(function (r) { var o = {}; head.forEach(function (h, i) { o[h] = (r[i] || "").trim(); }); return o; });
+  // Shows come from one of three places, best first:
+  //   1. The band's Google Sheet, read live (gigsCsvUrl in config). New rows show up within minutes.
+  //   2. The last copy of the Sheet saved by the nightly build (js/gigs-data.js), if the Sheet can't be reached.
+  //   3. `gigs` in config, when there's no Sheet.
+  // BUILT = the shows that have a hosted calendar file in cal/ (built at publish or overnight).
+  var SHEET = window.STM_SHEET && window.STM_SHEET.gigs ? window.STM_SHEET.gigs : null;
+  var BUILT = (C.gigsCsvUrl && SHEET) ? SHEET : C.gigsCsvUrl ? [] : (C.gigs || []);
+  function hasHostedCal(g) {
+    return BUILT.some(function (b) { return b.date === g.date && b.venue === g.venue && (b.time || "") === (g.time || ""); });
   }
 
   function loadGigs() {
-    var fallback = Promise.resolve(C.gigs || []);
-    var src = C.gigsCsvUrl
-      ? fetch(C.gigsCsvUrl, { cache: "no-store" }).then(function (r) { return r.ok ? r.text().then(parseCSV) : C.gigs || []; }).catch(function () { return C.gigs || []; })
-      : fallback;
+    var saved = SHEET || C.gigs || [];
+    var src = C.gigsCsvUrl && window.SheetGigs
+      ? fetch(C.gigsCsvUrl, { cache: "no-store" })
+          .then(function (r) { if (!r.ok) throw r; return r.text(); })
+          .then(function (t) { var res = window.SheetGigs.sheetToGigs(t); return res.gigs.length || !saved.length ? res.gigs : saved; })
+          .catch(function () { return saved; })
+      : Promise.resolve(C.gigsCsvUrl ? saved : C.gigs || []);
     return src.then(function (gigs) {
       var today = new Date(); today.setHours(0, 0, 0, 0);
       return gigs.map(function (g) { return Object.assign({}, g, { d: toDate(g.date) }); })
@@ -156,9 +154,9 @@
     if (t) {
       if (next) {
         var first = '<a class="btn btn-hot btn-sm" href="' + esc(next.link || IG) + '" target="_blank" rel="noopener">' + (next.link ? "Get the details" : "Follow for updates") + "</a>";
-        // Gigs from config have a real hosted file (cal/, built by scripts/make_ics.js at publish); phones block data: links.
-        // Gigs from the Sheet don't, so they keep the built-in file as a fallback.
-        var icsLink = (C.gigsCsvUrl ? icsHref(next) + '" download="six-to-midnight-' + esc(next.date) + '.ics' : "/cal/" + esc(next.date) + ".ics");
+        // Shows built at publish or overnight have a real hosted file in cal/ (phones block data: links).
+        // A show added to the Sheet today doesn't have one until tonight, so it gets the built-in file meanwhile.
+        var icsLink = hasHostedCal(next) ? "/cal/" + esc(next.date) + ".ics" : icsHref(next) + '" download="six-to-midnight-' + esc(next.date) + '.ics';
         var cal = '<p class="cal">Add to calendar: <a href="' + icsLink + '">Apple / Outlook</a> · ' +
           '<a href="' + esc(googleCalHref(next)) + '" target="_blank" rel="noopener">Google</a></p>';
         t.innerHTML = '<div class="stub"><div class="d">' + next.d.getDate() + '</div><div class="m">' + DAY[next.d.getDay()] + "<b>" + MON[next.d.getMonth()] + " " + next.d.getFullYear() + "</b></div></div>" +
