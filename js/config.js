@@ -31,7 +31,7 @@ window.STM = {
   // Gig dates. When the shared Google Sheet is set up:
   // File > Share > Publish to web > Sheet1 > CSV, paste the link here.
   // Sheet columns: date (YYYY-MM-DD) | venue | town | time | link
-  gigsCsvUrl: "",
+  gigsCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFQSXL3SiqTEgyFouhB9wUXyvfLoSf3eBqtWp4nuxGsL1bh7dyhEqQGm3rlKL_IDx48TZnaXGBfAo6/pub?gid=0&single=true&output=csv",
 
   // Used until the Sheet link above is filled in.
   // time: shown as written. For "Add to calendar" these formats are understood:
