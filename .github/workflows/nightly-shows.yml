@@ -1,6 +1,7 @@
 # Every night: read the band's Google Sheet of shows and, if anything changed, rebuild the
 # calendar files (cal/) and Google's show listings, then publish. The band edits the Sheet;
 # nobody has to touch the code. Also runs Mondays even without changes, so past shows drop off.
+# Runs on GitHub's computers, not a laptop: nothing needs to be on.
 # Run it right now: GitHub > Actions > "Nightly shows update" > Run workflow.
 # The scripts in .github/build/ are copied here by scripts/publish.sh. Edit the originals in scripts/.
 name: Nightly shows update
@@ -47,6 +48,18 @@ jobs:
           git commit -qm "Nightly: shows from the Sheet"
           git push -q
           echo "pushed=yes" >> "$GITHUB_OUTPUT"
+      # GitHub pauses scheduled jobs in a public repo after 60 days with no commits. Shows rebuilt
+      # on Mondays usually commit, but a quiet stretch (no upcoming shows) wouldn't. So once a month
+      # (and on the very first run) commit a one-line date file. Visitors never see it.
+      - name: Monthly heartbeat (keeps this job from being paused)
+        if: steps.push.outputs.pushed != 'yes'
+        run: |
+          f=.github/heartbeat.txt
+          if [ -f "$f" ] && [ "$(date -u +%d)" != "01" ]; then exit 0; fi
+          date -u +%F > "$f"
+          git config user.name "Nightly shows update"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$f" && git commit -qm "Nightly: monthly heartbeat" && git push -q && echo "Heartbeat committed."
       # GitHub Pages sites: make sure Pages rebuilds (Cloudflare sites rebuild on the push by themselves).
       - name: Rebuild GitHub Pages
         if: steps.push.outputs.pushed == 'yes' && hashFiles('CNAME') != ''
