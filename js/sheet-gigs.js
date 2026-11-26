@@ -2,7 +2,7 @@
 // (scripts/sync_gigs.js, nightly job), so both read the Sheet the same way.
 //
 // Sheet columns (header row, any order, any capitalization):
-//   date | venue | town | time | link | venue website | cover
+//   date | venue | town | time | link | venue website | venue instagram | cover
 // Only date and venue are required.
 // Dates the band can type: 2027-02-20, 2/20/2027, 2/20/27, Feb 20 2027, Sat, Feb 20, 2027, Feb 20.
 // (A date with no year means the next Feb 20 from today.) Bad rows are skipped and listed in `skipped`.
@@ -30,6 +30,7 @@
     var k = String(h || "").toLowerCase().replace(/[^a-z]/g, "");
     if (k === "venuewebsite" || k === "venueurl" || k === "venuelink" || k === "website") return "venueUrl";
     if (k === "cover" || k === "covercharge" || k === "price") return "cover";
+    if (k === "venueinstagram" || k === "instagram" || k === "venuesocials" || k === "venuesocial" || k === "socials") return "venueSocial";
     if (k === "city") return "town";
     if (k === "details" || k === "eventlink" || k === "tickets") return "link";
     return k;
@@ -79,6 +80,14 @@
       var vu = String(g.venueUrl || "");
       if (vu && !/^https?:\/\//i.test(vu) && /^[\w-]+(\.[\w-]+)+(\/\S*)?$/.test(vu)) vu = "https://" + vu;
       if (/^https?:\/\//i.test(vu)) out.venueUrl = vu;
+      // Venue Instagram (or other social pages): "@brothers.tavern", "instagram.com/brothers.tavern" or a full link.
+      // Several allowed, separated by spaces or commas. Tells Google which venue this is.
+      var so = String(g.venueSocial || "").split(/[\s,]+/).map(function (v) {
+        if (/^@[\w.]+$/.test(v)) return "https://www.instagram.com/" + v.slice(1);
+        if (v && !/^https?:\/\//i.test(v) && /^[\w-]+(\.[\w-]+)+\/\S+$/.test(v)) return "https://" + v;
+        return /^https?:\/\//i.test(v) ? v : "";
+      }).filter(Boolean);
+      if (so.length) out.venueSameAs = so;
       if (g.cover !== undefined && g.cover !== "") {
         var c = String(g.cover).replace(/[$\s]/g, "");
         if (/^free$/i.test(c)) out.cover = 0; else if (/^\d+(\.\d+)?$/.test(c)) out.cover = Number(c);
